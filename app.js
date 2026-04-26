@@ -287,40 +287,55 @@ function render() {
 
       rows += '<tr class="row-' + status + '">'
         + '<td class="td-n">' + it.n + '</td>'
-        + '<td class="td-name"><strong>' + it.name + '</strong>' + (it.brand ? '<br><span class="brand">' + it.brand + '</span>' : '') + '</td>'
-        + '<td class="td-unit">' + it.dvt + '<br>SL: ' + it.sl + '</td>'
-        + '<td class="td-price">' + fmt(it.dg) + overBadge + pBar + '</td>'
-        + '<td class="td-ref">Khung giá:<br><b>' + (it.ref || '-') + '</b></td>'
-        + '<td class="td-save">' + saveStr + '</td>'
+        + '<td class="td-name"><strong>' + it.name + '</strong>'
+        + (it.note ? '<div class="item-note">' + it.note + '</div>' : '') + '</td>'
+        + '<td class="td-brand">' + (it.brand ? '<span class="brand-pill">' + it.brand + '</span>' : '<span class="no-brand">—</span>') + '</td>'
+        + '<td class="td-unit">' + it.dvt + '<br><span class="qty-val">×' + it.sl + '</span></td>'
+        + '<td class="td-price">' + fmt(it.dg) + (overBadge ? '<br>' + overBadge : '') + pBar + '</td>'
+        + '<td class="td-ref">' + (it.ref ? '<span class="ref-val">' + it.ref + '</span>' : '<span class="no-brand">—</span>') + '</td>'
+        + '<td class="td-save' + (it.saving > 0 ? ' positive' : '') + '">' + (it.saving > 0 ? fmt(it.saving) : '—') + '</td>'
         + '<td class="td-total">' + fmt(it.tt) + '</td>'
-        + '<td class="td-custom"><input type="number" placeholder="Giá chốt..." value="' + customP + '" onchange="saveLocal(\'' + it.id + '\', \'price\', this.value); updateDashboard();"></td>'
-        + '<td class="td-status"><select class="s-' + status + '" onchange="saveLocal(\'' + it.id + '\', \'status\', this.value); render();">'
-        + '<option value="pending" ' + (status === 'pending' ? 'selected' : '') + '>Chưa chốt</option>'
-        + '<option value="negotiating" ' + (status === 'negotiating' ? 'selected' : '') + '>Đang đàm phán</option>'
-        + '<option value="agreed" ' + (status === 'agreed' ? 'selected' : '') + '>Đã đồng ý</option>'
+        + '<td class="td-custom"><input type="number" placeholder="Giá chốt..." value="' + customP + '" onchange="saveLocal(\'' + it.id + '\', \'price\', this.value)"></td>'
+        + '<td class="td-status"><select class="s-' + status + '" onchange="saveLocal(\'' + it.id + '\', \'status\', this.value); render();">' 
+        + '<option value="pending"' + (status==='pending'?' selected':'') + '>⏳ Chưa chốt</option>'
+        + '<option value="negotiating"' + (status==='negotiating'?' selected':'') + '>🔄 Đang đàm phán</option>'
+        + '<option value="agreed"' + (status==='agreed'?' selected':'') + '>✅ Đã đồng ý</option>'
         + '</select></td>'
-        + '<td class="td-note-cell"><input type="text" placeholder="Ghi chú cá nhân..." value="' + myNote + '" onchange="saveLocal(\'' + it.id + '\', \'note\', this.value)"></td>'
+        + '<td class="td-note-cell"><input type="text" placeholder="Ghi chú..." value="' + myNote + '" onchange="saveLocal(\'' + it.id + '\', \'note\', this.value)"></td>'
         + '<td class="td-act"><div class="buy-links">'
         + '<a class="buy-btn btn-shopee" href="' + shopeeUrl(it.name, it.brand) + '" target="_blank">Shopee</a>'
         + '<a class="buy-btn btn-lazada" href="' + lazadaUrl(it.name, it.brand) + '" target="_blank">Lazada</a>'
         + '<a class="buy-btn btn-google" href="' + googleUrl(it.name, it.brand) + '" target="_blank">Google</a>'
         + '</div></td>'
         + '</tr>';
-    });
 
-    let secTotal = items.reduce((sum, it) => sum + it.tt, 0);
-    let secSaving = items.reduce((sum, it) => sum + it.saving, 0);
+    var secSaving = items.reduce(function(s,it){ return s + it.saving; }, 0);
+    var secHigh  = items.filter(function(it){ return it.overPct > 20; }).length;
 
     html += '<div class="section" data-s="' + sec.s + '">'
-      + '<div class="sec-head ' + sec.s + '" onclick="toggle(this)">'
+      + '<div class="sec-head" onclick="toggle(this)">'
       + '<span class="sec-badge ' + sec.s + '">Phần ' + sec.s + '</span>'
       + '<span class="sec-title">' + sec.name + '</span>'
-      + '<span class="sec-saving">Tiết kiệm: ' + fmtShort(secSaving) + '</span>'
+      + (secHigh > 0 ? '<span class="sec-tag high-tag">' + secHigh + ' giá cao</span>' : '')
+      + (secSaving > 0 ? '<span class="sec-saving">💰 ' + fmtShort(secSaving) + '</span>' : '')
       + '<span class="sec-cnt">' + items.length + ' mục</span>'
-      + '<svg class="chevron open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>'
+      + '<svg class="chevron open" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>'
       + '</div>'
       + '<div class="tbl-wrap"><table>'
-      + '<thead><tr><th>#</th><th>Hạng mục</th><th>ĐVT / SL</th><th>Đơn giá Báo</th><th>Giá thị trường</th><th>Tiết kiệm</th><th>Thành tiền</th><th>Giá đàm phán</th><th>Trạng thái</th><th>Ghi chú</th><th>Khảo giá</th></tr></thead>'
+      + '<thead><tr>'
+      + '<th>#</th>'
+      + '<th>Hạng mục</th>'
+      + '<th>Thương hiệu</th>'
+      + '<th>ĐVT / SL</th>'
+      + '<th>Đơn giá Báo</th>'
+      + '<th>Giá thị trường</th>'
+      + '<th>Tiết kiệm</th>'
+      + '<th>Thành tiền</th>'
+      + '<th>Giá đàm phán</th>'
+      + '<th>Trạng thái</th>'
+      + '<th>Ghi chú</th>'
+      + '<th>Khảo giá</th>'
+      + '</tr></thead>'
       + '<tbody>' + rows + '</tbody></table></div></div>';
   });
 
