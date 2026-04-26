@@ -14,7 +14,7 @@
 <header class="header">
   <div class="wrap hdr-inner">
     <div class="logo">
-      <svg width="36" height="36" viewBox="0 0 36 36"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C6FFF"/><stop offset="1" stop-color="#3ECFCF"/></linearGradient></defs><rect width="36" height="36" rx="9" fill="url(#lg)"/><path d="M6 28L18 8l12 20H6z" fill="#fff" opacity=".9"/><path d="M12 28l6-12 6 12H12z" fill="url(#lg)" opacity=".8"/></svg>
+      <svg width="38" height="38" viewBox="0 0 38 38"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C6FFF"/><stop offset="1" stop-color="#3ECFCF"/></linearGradient></defs><rect width="38" height="38" rx="9" fill="url(#lg)"/><path d="M7 29L19 9l12 20H7z" fill="#fff" opacity=".9"/><path d="M13 29l6-11 6 11H13z" fill="url(#lg)" opacity=".8"/></svg>
       <div>
         <div class="logo-name">ARCH.A</div>
         <div class="logo-sub">Bảng Báo Giá Chi Tiết Thi Công</div>
@@ -23,16 +23,49 @@
     <div class="hdr-stats">
       <div class="hstat red"><div class="hstat-val">2.93 tỷ</div><div class="hstat-lbl">Tổng báo giá</div></div>
       <div class="hstat grn"><div class="hstat-val">1.74 tỷ</div><div class="hstat-lbl">Giá thị trường</div></div>
-      <div class="hstat ylw"><div class="hstat-val">~1.19 tỷ</div><div class="hstat-lbl">Chênh lệch</div></div>
+      <div class="hstat ylw"><div class="hstat-val" id="savedDisplay">0đ</div><div class="hstat-lbl">Đã thương lượng</div></div>
     </div>
   </div>
 </header>
 
-<div class="alert-bar wrap">
-  ⚠️ Tổng báo giá <strong>cao hơn thị trường ~1.19 tỷ đồng</strong>. Các mục được đánh dấu <span class="tag high">Cao</span> cần thương lượng lại trước khi ký hợp đồng.
+<!-- Savings Dashboard -->
+<div class="dashboard wrap">
+  <div class="dash-card">
+    <div class="dash-icon">⚠️</div>
+    <div class="dash-info">
+      <div class="dash-val" id="highCount">0</div>
+      <div class="dash-lbl">Mục giá cao</div>
+    </div>
+  </div>
+  <div class="dash-card accent">
+    <div class="dash-icon">💰</div>
+    <div class="dash-info">
+      <div class="dash-val" id="potentialSavings">0đ</div>
+      <div class="dash-lbl">Tiết kiệm tiềm năng</div>
+    </div>
+  </div>
+  <div class="dash-card green">
+    <div class="dash-icon">✅</div>
+    <div class="dash-info">
+      <div class="dash-val" id="agreedCount">0</div>
+      <div class="dash-lbl">Đã đồng ý / Tổng</div>
+    </div>
+  </div>
+  <div class="dash-card blue">
+    <div class="dash-icon">📋</div>
+    <div class="dash-info">
+      <div class="dash-val" id="customTotal">2.93 tỷ</div>
+      <div class="dash-lbl">Tổng sau đàm phán</div>
+    </div>
+  </div>
+  <button class="dash-reset" onclick="resetAll()">🔄 Reset tất cả</button>
 </div>
 
-  <div class="controls wrap">
+<div class="alert-bar wrap">
+  ⚠️ Tổng báo giá <strong>cao hơn thị trường ~1.19 tỷ đồng</strong>. Các mục <span class="tag high">⚠ Giá Cao</span> cần thương lượng trước khi ký hợp đồng.
+</div>
+
+<div class="controls wrap">
   <div class="search-box">
     <svg class="si" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="search" type="text" placeholder="Tìm hạng mục, thương hiệu, vật tư…"/>
@@ -44,18 +77,19 @@
     <button class="tab" data-f="III">III. Cửa</button>
     <button class="tab" data-f="IV">IV. Nội thất</button>
   </div>
+  <div class="sort-wrap">
+    <select id="sortBy" onchange="render()">
+      <option value="default">Sắp xếp mặc định</option>
+      <option value="overprice">% Kê giá cao nhất</option>
+      <option value="savings">Tiết kiệm nhiều nhất</option>
+      <option value="total">Thành tiền cao nhất</option>
+    </select>
+  </div>
 </div>
 
-<main class="wrap main" id="main">
-  <!-- rendered by JS -->
-</main>
-
-<div id="empty" class="empty hidden">
-  <div style="font-size:3rem">🔍</div>
-  <p>Không tìm thấy kết quả</p>
-</div>
-
-<footer class="footer">Dữ liệu chỉ mang tính tham khảo · ARCH.A Báo Giá Chi Tiết</footer>
+<main class="wrap main" id="main"></main>
+<div id="empty" class="empty hidden"><div style="font-size:3rem">🔍</div><p>Không tìm thấy kết quả</p></div>
+<footer class="footer">Dữ liệu chỉ mang tính tham khảo · ARCH.A Báo Giá Chi Tiết · Dữ liệu lưu trên trình duyệt</footer>
 
 <script src="app.js"></script>
 </body>
