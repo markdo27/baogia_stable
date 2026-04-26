@@ -1,0 +1,163 @@
+
+var DATA=[
+{s:'I',name:'Điện - Nước - Mạng - ĐHKK',items:[
+{n:1,name:'Nhân công + vật tư phụ phần điện',dvt:'m2',sl:385,dg:639000,tt:246015000,ref:'250k-350k',note:'Nhân công hoàn thiện',ev:'high',brand:''},
+{n:2,name:'Tủ điện tầng hầm + tầng 1',dvt:'cái',sl:1,dg:30820000,tt:30820000,ref:'15tr-20tr',note:'MCB 3P Schneider',ev:'high',brand:'Schneider'},
+{n:3,name:'Tủ điện tầng 2',dvt:'cái',sl:1,dg:12730000,tt:12730000,ref:'6tr-8tr',note:'18 lines Schneider',ev:'high',brand:'Schneider'},
+{n:4,name:'Tủ điện tầng 3',dvt:'cái',sl:1,dg:14070000,tt:14070000,ref:'6tr-8tr',note:'18 lines Schneider',ev:'high',brand:'Schneider'},
+{n:5,name:'Tủ điện tầng 4 + áp mái',dvt:'cái',sl:1,dg:12328000,tt:12328000,ref:'6tr-8tr',note:'18 lines Schneider',ev:'high',brand:'Schneider'},
+{n:6,name:'Cáp trục link tầng Cadivi 16mm2',dvt:'m',sl:400,dg:113625,tt:45450000,ref:'70k-90k',note:'Cadivi 16mm2',ev:'high',brand:'Cadivi'},
+{n:7,name:'Cáp trục chính đến đồng hồ',dvt:'m',sl:35,dg:389136,tt:13619760,ref:'240k-280k',note:'CXV 4x16mm2',ev:'high',brand:'Cadivi'},
+{n:8,name:'Cáp cấp nguồn thang máy CXV 6mm2',dvt:'m',sl:125,dg:43738,tt:5467250,ref:'35k-45k',note:'CXV 6mm2',ev:'ok',brand:'Cadivi'},
+{n:9,name:'Dây CV 4.0mm2 Cadivi',dvt:'m',sl:180,dg:29882,tt:5378760,ref:'16k-20k',note:'Quầy pha chế, lò nướng, bếp từ',ev:'high',brand:'Cadivi'},
+{n:10,name:'Dây CV 2.5mm2 Cadivi',dvt:'m',sl:3000,dg:19698,tt:59094000,ref:'10k-13k',note:'Ổ cắm',ev:'high',brand:'Cadivi'},
+{n:11,name:'Dây CV 1.5mm2 Cadivi',dvt:'m',sl:4200,dg:12087,tt:50765400,ref:'6.5k-8.5k',note:'Đèn',ev:'high',brand:'Cadivi'},
+{n:12,name:'Cáp mạng Cat6 Panduit',dvt:'m',sl:350,dg:20100,tt:7035000,ref:'13k-16k',note:'Data, camera, wifi',ev:'mid',brand:'Panduit'},
+{n:13,name:'Ổ cắm đôi 3 chấu Schneider AvatarOn',dvt:'cái',sl:54,dg:456350,tt:24642900,ref:'200k-280k',note:'Schneider AvatarOn',ev:'high',brand:'Schneider'},
+{n:14,name:'Ổ cắm chống nước Schneider AvatarOn',dvt:'cái',sl:11,dg:750400,tt:8254400,ref:'350k-450k',note:'Schneider AvatarOn',ev:'high',brand:'Schneider'},
+{n:16,name:'Công tắc đơn 1 chiều Schneider',dvt:'cái',sl:9,dg:238520,tt:2146680,ref:'120k-150k',note:'Schneider',ev:'high',brand:'Schneider'},
+{n:17,name:'Công tắc đôi 1 chiều Schneider',dvt:'cái',sl:15,dg:352581,tt:5288715,ref:'180k-220k',note:'Schneider AvatarOn',ev:'high',brand:'Schneider'},
+{n:21,name:'Đèn downlight âm trần 12W',dvt:'cái',sl:39,dg:752600,tt:29351400,ref:'350k-500k',note:'3500K, 24D, CRI>90',ev:'high',brand:''},
+{n:24,name:'Đèn tường ngoại thất Nanoco 7W',dvt:'bộ',sl:23,dg:763960,tt:17571080,ref:'300k-450k',note:'LED ngoài trời Nanoco 7W',ev:'high',brand:'Nanoco'},
+{n:25,name:'Quạt hút Nanoco NCV2020-C 18W',dvt:'cái',sl:6,dg:568000,tt:3408000,ref:'350k-450k',note:'Âm trần dùng ống dẫn',ev:'mid',brand:'Nanoco'},
+{n:26,name:'Đèn led dây hắt khe trần COB',dvt:'m',sl:45,dg:268380,tt:12077100,ref:'100k-150k',note:'COB 3500K DC24V 9W/m',ev:'high',brand:''},
+{n:28,name:'Ống đồng máy lạnh 1-1.5HP',dvt:'m',sl:70,dg:426000,tt:29820000,ref:'180k-230k',note:'Ống đồng 1-1.5Hp',ev:'high',brand:''},
+{n:29,name:'Ống nước ngưng Bình Minh d27',dvt:'m',sl:110,dg:213000,tt:23430000,ref:'60k-90k',note:'Bình Minh d27 + bọc cách nhiệt',ev:'high',brand:'Bình Minh'},
+{n:31,name:'Nhân công + vật tư mạng CCTV',dvt:'gói',sl:1,dg:18460000,tt:18460000,ref:'5tr-8tr',note:'4 điểm wifi + 3 camera',ev:'high',brand:''},
+{n:32,name:'Cáp mạng CAT6 Panduit (thùng)',dvt:'thùng',sl:1,dg:4799600,tt:4799600,ref:'3.5tr-4tr',note:'Panduit',ev:'mid',brand:'Panduit'},
+{n:33,name:'Nhân công + vật tư hệ thống nước',dvt:'m2',sl:385,dg:610600,tt:235081000,ref:'200k-300k',note:'PVC nước nóng',ev:'high',brand:''}
+]},
+{s:'II',name:'Xây dựng - Hoàn thiện',items:[
+{n:1,name:'Cán nền cân bằng sàn',dvt:'m2',sl:251,dg:298200,tt:74848200,ref:'120k-150k',note:'Bê tông đá mi 5-8cm',ev:'high',brand:''},
+{n:2,name:'Xây tường + tô 2 mặt',dvt:'m2',sl:600,dg:781000,tt:468600000,ref:'450k-550k',note:'Gạch ống vữa mác 75',ev:'high',brand:''},
+{n:4,name:'Vách thạch cao 1 mặt Vĩnh Tường',dvt:'m2',sl:21,dg:269800,tt:5665800,ref:'180k-220k',note:'Khung Alpha',ev:'ok',brand:'Vĩnh Tường'},
+{n:7,name:'Trần thạch cao phẳng Vĩnh Tường',dvt:'m2',sl:320,dg:269800,tt:86336000,ref:'180k-220k',note:'Khung Alpha',ev:'ok',brand:'Vĩnh Tường'},
+{n:8,name:'Trần thạch cao vòm cong + chống ẩm',dvt:'m2',sl:28,dg:369200,tt:10337600,ref:'250k-320k',note:'Khung Alpha toilet',ev:'ok',brand:'Vĩnh Tường'},
+{n:11,name:'Cầu thang đá mài',dvt:'md',sl:39,dg:2556000,tt:99684000,ref:'1.2tr-1.8tr',note:'Đá hồng nhạt/trắng xám',ev:'high',brand:''},
+{n:12,name:'Đá mài sàn màu hồng + xám',dvt:'m2',sl:34,dg:1704000,tt:57936000,ref:'800k-1.2tr',note:'Dày 1.5-2cm',ev:'high',brand:''},
+{n:14,name:'Sơn Dulux Easy Clean nội thất',dvt:'m2',sl:1120,dg:170400,tt:190848000,ref:'60k-80k',note:'Bả 2 lớp lót 1 phủ 2',ev:'high',brand:'Dulux'},
+{n:15,name:'Sàn gỗ Egger 8mm EPL069',dvt:'m2',sl:80,dg:724200,tt:57936000,ref:'450k-550k',note:'',ev:'high',brand:'Egger'},
+{n:18,name:'Chống thấm vệ sinh Sika Top 107',dvt:'m2',sl:27,dg:497000,tt:13419000,ref:'200k-300k',note:'Sika Top 107',ev:'high',brand:'Sika'},
+{n:19,name:'Nhân công ốp sàn gạch 60x60',dvt:'m2',sl:148,dg:355000,tt:52540000,ref:'180k-250k',note:'Xi măng, keo chà ron',ev:'high',brand:''},
+{n:20,name:'Gạch ốp sàn 60x60 Porelan Moongress',dvt:'m2',sl:148,dg:426000,tt:63048000,ref:'250k-400k',note:'Porelan Moongress',ev:'mid',brand:'Porelan'},
+{n:22,name:'Gạch thẻ trắng 10x10',dvt:'m2',sl:35,dg:475700,tt:16649500,ref:'250k-350k',note:'',ev:'mid',brand:''},
+{n:27,name:'Đá ốp 2 bên cửa thang máy Caracasta',dvt:'m2',sl:11,dg:4828000,tt:53108000,ref:'2tr-3.5tr',note:'Đá Caracasta tự nhiên',ev:'high',brand:''}
+]},
+{s:'III',name:'Lắp đặt Cửa',items:[
+{n:1,name:'Cửa lên thang tầng hầm - Nhôm Xingfa',dvt:'bộ',sl:2,dg:6970780,tt:13941560,ref:'2.2tr-2.8tr/m2',note:'Nhôm Xingfa kính 8mm',ev:'mid',brand:'Xingfa'},
+{n:2,name:'Cửa thang tầng 1 - Nhôm Xingfa',dvt:'bộ',sl:1,dg:19604520,tt:19604520,ref:'2.2tr-2.8tr/m2',note:'Nhôm Xingfa 2950x2400',ev:'mid',brand:'Xingfa'},
+{n:5,name:'Vách ngăn WC phòng bé - kính sọc',dvt:'bộ',sl:1,dg:7171000,tt:7171000,ref:'2.8tr-3.8tr/m2',note:'Nhôm Slim kính sọc gân',ev:'mid',brand:''},
+{n:9,name:'Cửa tủ bếp - cửa lùa kính sọc',dvt:'m2',sl:7.44,dg:5964000,tt:44372160,ref:'2.2tr-2.8tr/m2',note:'Cửa lùa Slim kính sọc gân',ev:'mid',brand:''},
+{n:15,name:'Cửa vệ sinh Composite Đài Loan',dvt:'bộ',sl:3,dg:6390000,tt:19170000,ref:'3.5tr-4.5tr/bộ',note:'Composite trắng',ev:'high',brand:''},
+{n:16,name:'Cửa phòng ngủ bé - gỗ tự nhiên',dvt:'bộ',sl:1,dg:13376400,tt:13376400,ref:'6tr-8tr/bộ',note:'Gỗ tự nhiên sơn trắng',ev:'high',brand:''},
+{n:17,name:'Cửa PN master + phòng chơi + làm việc - Gỗ Ash',dvt:'bộ',sl:3,dg:13376400,tt:40129200,ref:'6tr-9tr/bộ',note:'Gỗ Ash veneer',ev:'high',brand:''},
+{n:18,name:'Cửa WC Master + WC chung - Gỗ Ash',dvt:'bộ',sl:2,dg:12496000,tt:24992000,ref:'6tr-9tr/bộ',note:'Gỗ Ash veneer',ev:'high',brand:''},
+{n:19,name:'Khóa cửa phòng ngủ VICKINI',dvt:'bộ',sl:6,dg:1065000,tt:6390000,ref:'450k-700k',note:'VICKINI 34561.101',ev:'high',brand:'VICKINI'},
+{n:20,name:'Cửa lùa phòng chơi tầng 3 - Gỗ Ash',dvt:'bộ',sl:1,dg:18718440,tt:18718440,ref:'',note:'Gỗ Ash kính cường lực 8mm',ev:'mid',brand:''},
+{n:26,name:'Cửa lùa lớn - Plywood veneer',dvt:'bộ',sl:1,dg:32989440,tt:32989440,ref:'',note:'Plywood veneer sơn PU',ev:'mid',brand:''}
+]},
+{s:'IV',name:'Nội thất - Đồ gỗ',items:[
+{n:8,name:'Tủ áo nhỏ phòng bé - Melamin MDF',dvt:'bộ',sl:1,dg:8520000,tt:8520000,ref:'2.5tr-3.2tr/m2',note:'Melamin MDF cánh sơn trắng',ev:'ok',brand:''},
+{n:10,name:'Tủ âm tường phòng khách (Lego)',dvt:'bộ',sl:1,dg:20590000,tt:20590000,ref:'',note:'Cánh ply veneer thùng MDF',ev:'mid',brand:''},
+{n:11,name:'Hệ tủ đồ trước nhà WC',dvt:'bộ',sl:1,dg:14910000,tt:14910000,ref:'',note:'Cánh ply veneer thùng MDF',ev:'mid',brand:''},
+{n:12,name:'Khung bao viền tầng 3',dvt:'m',sl:12.5,dg:1065000,tt:13312500,ref:'500k-750k/md',note:'Plywood veneer sơn PU',ev:'high',brand:''},
+{n:13,name:'Bục ngồi + nệm ngồi tầng 3',dvt:'bộ',sl:1,dg:12780000,tt:12780000,ref:'',note:'Plywood phủ veneer sơn PU',ev:'mid',brand:''},
+{n:14,name:'Hộp gỗ ốp cạnh tường bo cong',dvt:'m',sl:12,dg:923000,tt:11076000,ref:'600k-800k/md',note:'Plywood sơn trắng',ev:'mid',brand:''},
+{n:19,name:'Tủ áo - tủ đồ chơi tầng 3',dvt:'bộ',sl:1,dg:18460000,tt:18460000,ref:'',note:'Thùng MDF cánh plywood',ev:'mid',brand:''},
+{n:21,name:'Hệ tủ phòng học',dvt:'bộ',sl:1,dg:15620000,tt:15620000,ref:'',note:'Cánh ply veneer thùng MDF',ev:'mid',brand:''},
+{n:23,name:'Bàn làm việc tầng 4',dvt:'bộ',sl:1,dg:7384000,tt:7384000,ref:'',note:'Plywood veneer',ev:'mid',brand:''},
+{n:24,name:'Tủ phòng làm việc 1 - MDF Melamin',dvt:'bộ',sl:1,dg:4430400,tt:4430400,ref:'2.5tr-3.2tr/m2',note:'MDF Melamin',ev:'ok',brand:''},
+{n:26,name:'Kệ ly - Plywood veneer kệ inox',dvt:'cái',sl:1,dg:3124000,tt:3124000,ref:'',note:'Plywood veneer kệ inox',ev:'mid',brand:''},
+{n:27,name:'Bục ngồi + nệm ngồi tầng 4',dvt:'bộ',sl:1,dg:14626000,tt:14626000,ref:'',note:'Plywood veneer nệm vải',ev:'mid',brand:''}
+]}
+];
+
+function fmt(n){if(!n)return '-';return n.toLocaleString('vi-VN')+'đ';}
+
+function evTag(ev){
+  if(ev==='high') return '<span class="tag high">⚠ Giá Cao</span>';
+  if(ev==='mid')  return '<span class="tag mid">🔍 Cần Check</span>';
+  return '<span class="tag ok">✓ OK</span>';
+}
+
+function shopeeUrl(name,brand){
+  return 'https://shopee.vn/search?keyword='+encodeURIComponent((brand?brand+' ':'')+name);
+}
+function googleUrl(name,brand){
+  return 'https://www.google.com/search?q='+encodeURIComponent((brand?brand+' ':'')+name+' giá');
+}
+
+var filter='all', search='';
+
+function render(){
+  var main=document.getElementById('main');
+  var empty=document.getElementById('empty');
+  var html=''; var total=0;
+  DATA.forEach(function(sec){
+    if(filter!=='all' && filter!==sec.s) return;
+    var items=sec.items.filter(function(it){
+      if(!search) return true;
+      var t=search.toLowerCase();
+      return it.name.toLowerCase().indexOf(t)>-1
+          ||(it.brand&&it.brand.toLowerCase().indexOf(t)>-1)
+          ||(it.note&&it.note.toLowerCase().indexOf(t)>-1);
+    });
+    if(!items.length) return;
+    total+=items.length;
+    var rows='';
+    items.forEach(function(it){
+      rows+='<tr>'
+        +'<td class="td-n">'+it.n+'</td>'
+        +'<td class="td-name"><strong>'+it.name+'</strong>'+(it.brand?'<br><span class="brand">'+it.brand+'</span>':'')+'</td>'
+        +'<td class="td-unit">'+it.dvt+'</td>'
+        +'<td class="td-qty">'+it.sl+'</td>'
+        +'<td class="td-price">'+fmt(it.dg)+'</td>'
+        +'<td class="td-ref">'+( it.ref||'-')+'</td>'
+        +'<td class="td-total">'+fmt(it.tt)+'</td>'
+        +'<td>'+evTag(it.ev)+'</td>'
+        +'<td class="td-note">'+it.note+'</td>'
+        +'<td class="td-act">'
+        +'<a class="buy-btn" href="'+shopeeUrl(it.name,it.brand)+'" target="_blank">🛒 Shopee</a> '
+        +'<a class="buy-btn gbtn" href="'+googleUrl(it.name,it.brand)+'" target="_blank">🔍 Google</a>'
+        +'</td>'
+        +'</tr>';
+    });
+    html+='<div class="section" data-s="'+sec.s+'">'
+      +'<div class="sec-head '+sec.s+'" onclick="toggle(this)">'
+      +'<span class="sec-badge '+sec.s+'">Phần '+sec.s+'</span>'
+      +'<span class="sec-title">'+sec.name+'</span>'
+      +'<span class="sec-cnt">'+items.length+' hạng mục</span>'
+      +'<span class="chevron open">▲</span>'
+      +'</div>'
+      +'<div class="tbl-wrap"><table>'
+      +'<thead><tr><th>#</th><th>Hạng mục / Vật tư</th><th>ĐVT</th><th>SL</th><th>Đơn giá ARCH.A</th><th>Giá thị trường</th><th>Thành tiền</th><th>Đánh giá</th><th>Ghi chú</th><th>Tham khảo giá</th></tr></thead>'
+      +'<tbody>'+rows+'</tbody></table></div></div>';
+  });
+  document.getElementById('totalItems').textContent=total;
+  if(!html){main.innerHTML='';empty.classList.remove('hidden');}
+  else{main.innerHTML=html;empty.classList.add('hidden');}
+}
+
+function toggle(el){
+  var wrap=el.nextElementSibling;
+  var chev=el.querySelector('.chevron');
+  if(wrap.style.display==='none'){
+    wrap.style.display='';chev.textContent='▲';chev.classList.add('open');
+  } else {
+    wrap.style.display='none';chev.textContent='▼';chev.classList.remove('open');
+  }
+}
+
+document.getElementById('search').addEventListener('input',function(e){
+  search=e.target.value; render();
+});
+document.getElementById('tabs').addEventListener('click',function(e){
+  var btn=e.target.closest('.tab');
+  if(!btn) return;
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  filter=btn.dataset.f;
+  render();
+});
+
+render();
