@@ -137,35 +137,43 @@ function googleUrl(name, brand) { return 'https://www.google.com/search?q=' + en
 
 // --- Dashboard ---
 function updateDashboard() {
-  let highCount = 0;
-  let potentialSavings = 0;
-  let agreedCount = 0, negotiatingCount = 0, pendingCount = 0;
-  let totalItems = 0;
-  let customTotal = 0;
-  let savedTotal = 0;
+  var highCount = 0, potentialSavings = 0;
+  var agreedCount = 0, negotiatingCount = 0, pendingCount = 0;
+  var totalItems = 0;
+  var originalTotal = 0;  // sum of all quoted prices (before negotiation)
+  var customTotal = 0;    // sum of confirmed (agreed) negotiated prices only
+  var savedTotal = 0;
 
   DATA.forEach(function(sec) {
     sec.items.forEach(function(it) {
       totalItems++;
       var status = getLocal(it.id, 'status', 'pending');
-      var customP = parseFloat(getLocal(it.id, 'price', it.dg));
-      if (isNaN(customP)) customP = it.dg;
+      var customP = parseFloat(getLocal(it.id, 'price', ''));
 
       if (it.overPct > 20) highCount++;
       potentialSavings += it.saving;
+      originalTotal += it.tt;
 
-      if (status === 'agreed') agreedCount++;
-      else if (status === 'negotiating') negotiatingCount++;
-      else pendingCount++;
-
-      customTotal += customP * it.sl;
-      if (customP < it.dg) savedTotal += (it.dg - customP) * it.sl;
+      if (status === 'agreed') {
+        agreedCount++;
+        // Only count custom price for agreed items; fall back to quoted price
+        var p = (!isNaN(customP) && customP > 0) ? customP : it.dg;
+        customTotal += p * it.sl;
+        if (p < it.dg) savedTotal += (it.dg - p) * it.sl;
+      } else if (status === 'negotiating') {
+        negotiatingCount++;
+      } else {
+        pendingCount++;
+      }
     });
   });
+
+  var allAgreed = (agreedCount === totalItems && totalItems > 0);
 
   var hcEl = document.getElementById('highCount');
   var psEl = document.getElementById('potentialSavings');
   var acEl = document.getElementById('agreedCount');
+  var otEl = document.getElementById('originalTotal');
   var ctEl = document.getElementById('customTotal');
   var sdEl = document.getElementById('savedDisplay');
   var tiEl = document.getElementById('totalItems');
@@ -173,19 +181,34 @@ function updateDashboard() {
   if (hcEl) hcEl.textContent = highCount;
   if (psEl) psEl.textContent = fmtShort(potentialSavings);
   if (acEl) acEl.textContent = agreedCount + ' / ' + totalItems;
-  if (ctEl) ctEl.textContent = fmtShort(customTotal);
-  if (sdEl) { sdEl.textContent = 'Tiết kiệm: ' + fmtShort(savedTotal); sdEl.className = 'ov-trend' + (savedTotal > 0 ? ' up' : ''); }
+  if (otEl) otEl.textContent = fmtShort(originalTotal);
+
+  // "Tổng sau đàm phán" only shows real value when ALL items confirmed
+  if (ctEl) ctEl.textContent = allAgreed ? fmtShort(customTotal) : '0đ';
+  if (sdEl) {
+    if (allAgreed && savedTotal > 0) {
+      sdEl.textContent = 'Tiết kiệm: ' + fmtShort(savedTotal);
+      sdEl.className = 'ov-trend up';
+    } else if (allAgreed) {
+      sdEl.textContent = 'Đã chốt toàn bộ';
+      sdEl.className = 'ov-trend up';
+    } else {
+      var remaining = totalItems - agreedCount;
+      sdEl.textContent = 'Còn ' + remaining + ' mục chưa chốt';
+      sdEl.className = 'ov-trend';
+    }
+  }
   if (tiEl) tiEl.textContent = totalItems;
 
   // Tab counts
-  var tabAll = document.getElementById('tab-all-count');
+  var tabAll    = document.getElementById('tab-all-count');
   var tabAgreed = document.getElementById('tab-agreed-count');
-  var tabNeg = document.getElementById('tab-negotiating-count');
-  var tabPend = document.getElementById('tab-pending-count');
-  if (tabAll) tabAll.textContent = totalItems;
+  var tabNeg    = document.getElementById('tab-negotiating-count');
+  var tabPend   = document.getElementById('tab-pending-count');
+  if (tabAll)    tabAll.textContent    = totalItems;
   if (tabAgreed) tabAgreed.textContent = agreedCount;
-  if (tabNeg) tabNeg.textContent = negotiatingCount;
-  if (tabPend) tabPend.textContent = pendingCount;
+  if (tabNeg)    tabNeg.textContent    = negotiatingCount;
+  if (tabPend)   tabPend.textContent   = pendingCount;
 
   // Sidebar status badges
   var sbAll = document.getElementById('sb-all');
