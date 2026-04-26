@@ -169,7 +169,32 @@ function updateDashboard() {
 }
 
 // --- Render ---
-var filter = 'all', search = '', sortBy = 'default';
+var filter = 'all', search = '', sortBy = 'default', statusFilter = 'all';
+
+function setFilter(f, el) {
+  filter = f; statusFilter = 'all';
+  document.querySelectorAll('.sb-item[data-f]').forEach(function(i){ i.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.ctab').forEach(function(b){ b.classList.remove('active'); });
+  var allTab = document.querySelector('.ctab[data-f="all"]');
+  if (allTab) allTab.classList.add('active');
+  render();
+}
+
+function setStatus(s, el) {
+  statusFilter = s; filter = 'all';
+  document.querySelectorAll('.sb-item[data-status]').forEach(function(i){ i.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.sb-item[data-f]').forEach(function(i){ i.classList.remove('active'); });
+  render();
+}
+
+function toggleSidebar() {
+  var sb = document.getElementById('sidebar');
+  var mw = document.querySelector('.main-wrapper');
+  if (sb.style.width === '60px') { sb.style.width = 'var(--sb-w)'; mw.style.marginLeft = 'var(--sb-w)'; }
+  else { sb.style.width = '60px'; mw.style.marginLeft = '60px'; }
+}
 
 function render() {
   var main = document.getElementById('main');
@@ -180,11 +205,18 @@ function render() {
     if (filter !== 'all' && filter !== sec.s) return;
     
     var items = sec.items.filter(function(it) {
-      if (!search) return true;
-      var t = search.toLowerCase();
-      return it.name.toLowerCase().indexOf(t) > -1
+      if (search) {
+        var t = search.toLowerCase();
+        var match = it.name.toLowerCase().indexOf(t) > -1
           || (it.brand && it.brand.toLowerCase().indexOf(t) > -1)
           || (it.note && it.note.toLowerCase().indexOf(t) > -1);
+        if (!match) return false;
+      }
+      if (statusFilter !== 'all') {
+        var st = getLocal(it.id, 'status', 'pending');
+        if (st !== statusFilter) return false;
+      }
+      return true;
     });
 
     if (sortBy === 'overprice') items.sort((a,b) => b.overPct - a.overPct);
@@ -248,7 +280,7 @@ function render() {
       + '<svg class="chevron open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>'
       + '</div>'
       + '<div class="tbl-wrap"><table>'
-      + '<thead><tr><th>#</th><th>Hạng mục</th><th>ĐVT / SL</th><th>Đơn giá ARCH.A</th><th>Giá thị trường</th><th>Tiết kiệm</th><th>Thành tiền</th><th>Giá đàm phán</th><th>Trạng thái</th><th>Ghi chú</th><th>Khảo giá</th></tr></thead>'
+      + '<thead><tr><th>#</th><th>Hạng mục</th><th>ĐVT / SL</th><th>Đơn giá Báo</th><th>Giá thị trường</th><th>Tiết kiệm</th><th>Thành tiền</th><th>Giá đàm phán</th><th>Trạng thái</th><th>Ghi chú</th><th>Khảo giá</th></tr></thead>'
       + '<tbody>' + rows + '</tbody></table></div></div>';
   });
 
@@ -274,17 +306,17 @@ document.getElementById('search').addEventListener('input', function(e) {
 });
 
 document.getElementById('tabs').addEventListener('click', function(e) {
-  var btn = e.target.closest('.tab');
+  var btn = e.target.closest('.ctab');
   if (!btn) return;
-  document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.ctab').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  filter = btn.dataset.f;
+  var f = btn.dataset.f;
+  if (f && f.startsWith('status-')) { statusFilter = f.replace('status-',''); filter = 'all'; }
+  else { filter = f; statusFilter = 'all'; }
+  document.querySelectorAll('.sb-item[data-status]').forEach(function(i){ i.classList.remove('active'); });
   render();
 });
 
-document.getElementById('sortBy').addEventListener('change', function(e) {
-  sortBy = e.target.value; render();
-});
+document.getElementById('sortBy').addEventListener('change', function(e) { sortBy = e.target.value; render(); });
 
-// Init
 render();
