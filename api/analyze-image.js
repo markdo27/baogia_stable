@@ -31,7 +31,7 @@ Each object must have these exact keys (use Number type for prices, 0 if missing
 - "sl": (Number) Quantity. Default to 1.
 - "dg": (Number) Unit price (Đơn giá) exactly as listed in the image. Remove commas/dots, return raw integer (e.g. 15000000).
 - "tt": (Number) Total price (Thành tiền) exactly as listed in the image. Remove commas/dots, return raw integer.
-- "ref": (String) Estimate the current market retail price in Vietnam for this item based on your knowledge. Return as plain string number, e.g. "14500000". If unknown, use "0".
+- "ref": (String) Use Google Search to find the current LOWEST market retail price in Vietnam for this exact brand and model (e.g. at Dien May Xanh, Shopee, Lazada, Tiki). Return as plain string number, e.g. "14500000". If unknown, use "0".
 - "mmax": (Number) The exact same value as "ref", but as a Number. If unknown, use 0.
 - "note": (String) A short Vietnamese comment evaluating if the quoted price (dg) is expensive, cheap, or reasonable compared to the market price (mmax).
 
@@ -46,6 +46,11 @@ CRITICAL RULES:
               }
             }
           ]
+        }
+      ],
+      tools: [
+        {
+          google_search: {}
         }
       ],
       generationConfig: {
