@@ -8,13 +8,16 @@ module.exports = async function handler(req, res) {
   if (!imageBase64) return res.status(400).json({ error: 'Missing imageBase64' });
 
   try {
+    const isGeminiDirect = !!process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY || "sk-9aa9be1d95d96de8-c5nbd8-a7ca10f4";
+
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || "sk-9aa9be1d95d96de8-c5nbd8-a7ca10f4",
-      baseURL: "https://api.krouter.net/v1"
+      apiKey: apiKey,
+      baseURL: isGeminiDirect ? "https://generativelanguage.googleapis.com/v1beta/openai/" : "https://api.krouter.net/v1"
     });
 
     const response = await openai.chat.completions.create({
-      model: "cx/gpt-5.5",
+      model: isGeminiDirect ? "gemini-1.5-pro" : "cx/gpt-5.5",
       messages: [
         {
           role: "system",
