@@ -241,19 +241,62 @@ td{padding:11px 14px;vertical-align:middle}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .section{animation:fadeUp .22s ease both}
 
+/* ── MOBILE MENU & OVERLAY ─────────────────────── */
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);color:var(--text2);cursor:pointer;transition:.15s;padding:0}
+.mobile-menu-btn:hover{color:var(--text);border-color:var(--text3)}
+.sb-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:150;opacity:0;transition:opacity .3s ease}
+.sb-overlay.show{opacity:1;pointer-events:auto}
+
 /* ── RESPONSIVE ─────────────────────── */
 @media(max-width:1400px){.overview-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:1200px){.overview-grid{grid-template-columns:repeat(2,1fr)}.td-note-cell{display:none}}
-@media(max-width:1024px){.td-ref,.td-custom{display:none}}
+@media(max-width:1024px){
+  /* Table to Card Layout */
+  .tbl-wrap{overflow:visible;background:transparent}
+  table{display:block;width:100%}
+  thead{display:none}
+  tbody{display:flex;flex-direction:column;gap:12px;padding:12px 14px}
+  tbody tr{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;box-shadow:var(--shadow-sm);transition:none}
+  tbody tr:hover{background:var(--surface)}
+  tbody tr.row-agreed{background:var(--surface);border-left:4px solid var(--grn)}
+  tbody tr.row-negotiating{background:var(--surface);border-left:4px solid var(--ylw)}
+  body.dark tbody tr.row-agreed{background:var(--surface);border-left:4px solid var(--grn)}
+  body.dark tbody tr.row-negotiating{background:var(--surface);border-left:4px solid var(--ylw)}
+  td{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-subtle);text-align:right}
+  td:last-child{border-bottom:none;padding-bottom:0}
+  td::before{content:attr(data-label);font-weight:600;color:var(--text3);font-size:11.5px;text-transform:uppercase;margin-right:10px;text-align:left;flex-shrink:0}
+  
+  /* Reset specific widths and alignments for cards */
+  .td-n, .td-brand, .td-unit, .td-qty, .td-price, .td-ref, .td-save, .td-total, .td-custom, .td-status, .td-note-cell, .td-act{width:100%;text-align:right}
+  .td-name{flex-direction:column;align-items:flex-start;text-align:left;padding-bottom:12px}
+  .td-name::before{display:none}
+  .td-name strong{font-size:14px;margin-bottom:4px}
+  .price-bar-wrap{width:100%;max-width:200px;margin-left:auto;margin-top:8px}
+  .buy-links{flex-direction:row;justify-content:flex-end}
+  .td-custom input, .td-status select, .td-note-cell input{width:100%;max-width:200px;margin-left:auto}
+  
+  .td-ref, .td-custom{display:flex} /* Re-show them on cards */
+}
 @media(max-width:900px){
-  .sidebar{width:58px}.main-wrapper{margin-left:58px}
-  .sb-logo-name,.sb-section-label,.sb-item>span,.sb-badge,.sb-footer .sb-reset-btn span,.sb-group .sb-section-label{display:none}
-  .sb-item{justify-content:center;padding:8px}
-  .sb-logo{justify-content:center;padding:14px 0}
+  /* Off-canvas sidebar */
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-md)}
+  .sidebar.show{transform:translateX(0)}
+  .sb-overlay{display:block;pointer-events:none}
+  .main-wrapper{margin-left:0;padding:0 18px 40px}
+  .mobile-menu-btn{display:flex}
+  .sb-collapse{display:none}
+  .topbar-left{gap:12px}
 }
 @media(max-width:640px){
   .main-wrapper{padding:0 14px 40px}
-  .overview-grid{grid-template-columns:1fr 1fr}
-  .topbar-search input{width:120px}
+  .overview-grid{grid-template-columns:1fr}
+  .topbar{flex-direction:column;align-items:stretch;gap:12px}
+  .topbar-left{justify-content:space-between}
+  .topbar-right{justify-content:space-between}
+  .topbar-search{flex:1}
+  .topbar-search input{width:100%}
   .topbar-sort{display:none}
+  .export-text{display:none}
+  .page-header{flex-direction:column;align-items:stretch}
+  .export-btn{justify-content:center}
 }

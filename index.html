@@ -11,7 +11,8 @@
 </head>
 <body>
 
-<!-- ── SIDEBAR ──────────────────────────── -->
+<!-- ── SIDEBAR & OVERLAY ──────────────────────────── -->
+<div id="sb-overlay" class="sb-overlay" onclick="toggleSidebar()"></div>
 <aside class="sidebar" id="sidebar">
 
   <div class="sb-logo">
@@ -105,6 +106,9 @@
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-left">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <span class="breadcrumb">Trang chủ</span>
       <svg class="bc-sep" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       <span class="breadcrumb active">Quotation Checker</span>
@@ -137,7 +141,7 @@
     </div>
     <button class="export-btn" onclick="window.print()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Xuất báo cáo
+      <span class="export-text">Xuất báo cáo</span>
     </button>
   </div>
 

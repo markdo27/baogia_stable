@@ -1690,8 +1690,20 @@ function setStatus(s, el) {
 function toggleSidebar() {
   var sb = document.getElementById('sidebar');
   var mw = document.querySelector('.main-wrapper');
-  if (sb.style.width === '60px') { sb.style.width = 'var(--sb-w)'; mw.style.marginLeft = 'var(--sb-w)'; }
-  else { sb.style.width = '60px'; mw.style.marginLeft = '60px'; }
+  var overlay = document.getElementById('sb-overlay');
+  
+  if (window.innerWidth <= 900) {
+    sb.classList.toggle('show');
+    if (overlay) overlay.classList.toggle('show');
+  } else {
+    if (sb.style.width === '60px') { 
+      sb.style.width = 'var(--sb-w)'; 
+      mw.style.marginLeft = 'var(--sb-w)'; 
+    } else { 
+      sb.style.width = '60px'; 
+      mw.style.marginLeft = '60px'; 
+    }
+  }
 }
 
 function render() {
@@ -1745,23 +1757,23 @@ function render() {
       let saveStr = it.saving > 0 ? fmt(it.saving) : '-';
 
       rows += '<tr class="row-' + status + '">'
-        + '<td class="td-n">' + it.n + '</td>'
-        + '<td class="td-name"><strong>' + it.name + '</strong>'
+        + '<td class="td-n" data-label="#">' + it.n + '</td>'
+        + '<td class="td-name" data-label="Hạng mục"><strong>' + it.name + '</strong>'
         + (it.note ? '<div class="item-note">' + it.note + '</div>' : '') + '</td>'
-        + '<td class="td-brand">' + (it.brand ? '<span class="brand-pill">' + it.brand + '</span>' : '<span class="no-brand">—</span>') + '</td>'
-        + '<td class="td-unit">' + it.dvt + '<br><span class="qty-val">×' + it.sl + '</span></td>'
-        + '<td class="td-price">' + fmt(it.dg) + (overBadge ? '<br>' + overBadge : '') + pBar + '</td>'
-        + '<td class="td-ref">' + (it.ref ? '<span class="ref-val">' + it.ref + '</span>' : '<span class="no-brand">—</span>') + '</td>'
-        + '<td class="td-save' + (it.saving > 0 ? ' positive' : '') + '">' + (it.saving > 0 ? fmt(it.saving) : '—') + '</td>'
-        + '<td class="td-total">' + fmt(it.tt) + '</td>'
-        + '<td class="td-custom"><input type="number" placeholder="Giá chốt..." value="' + customP + '" onchange="saveLocal(\'' + it.id + '\', \'price\', this.value)"></td>'
-        + '<td class="td-status"><select class="s-' + status + '" onchange="saveLocal(\'' + it.id + '\', \'status\', this.value); render();">' 
+        + '<td class="td-brand" data-label="Thương hiệu">' + (it.brand ? '<span class="brand-pill">' + it.brand + '</span>' : '<span class="no-brand">—</span>') + '</td>'
+        + '<td class="td-unit" data-label="ĐVT / SL">' + it.dvt + '<br><span class="qty-val">×' + it.sl + '</span></td>'
+        + '<td class="td-price" data-label="Đơn giá Báo">' + fmt(it.dg) + (overBadge ? '<br>' + overBadge : '') + pBar + '</td>'
+        + '<td class="td-ref" data-label="Giá thị trường">' + (it.ref ? '<span class="ref-val">' + it.ref + '</span>' : '<span class="no-brand">—</span>') + '</td>'
+        + '<td class="td-save' + (it.saving > 0 ? ' positive' : '') + '" data-label="Tiết kiệm">' + (it.saving > 0 ? fmt(it.saving) : '—') + '</td>'
+        + '<td class="td-total" data-label="Thành tiền">' + fmt(it.tt) + '</td>'
+        + '<td class="td-custom" data-label="Giá đàm phán"><input type="number" placeholder="Giá chốt..." value="' + customP + '" onchange="saveLocal(\'' + it.id + '\', \'price\', this.value)"></td>'
+        + '<td class="td-status" data-label="Trạng thái"><select class="s-' + status + '" onchange="saveLocal(\'' + it.id + '\', \'status\', this.value); render();">' 
         + '<option value="pending"' + (status==='pending'?' selected':'') + '>⏳ Chưa chốt</option>'
         + '<option value="negotiating"' + (status==='negotiating'?' selected':'') + '>🔄 Đang đàm phán</option>'
         + '<option value="agreed"' + (status==='agreed'?' selected':'') + '>✅ Đã đồng ý</option>'
         + '</select></td>'
-        + '<td class="td-note-cell"><input type="text" placeholder="Ghi chú..." value="' + myNote + '" onchange="saveLocal(\'' + it.id + '\', \'note\', this.value)"></td>'
-        + '<td class="td-act"><div class="buy-links">'
+        + '<td class="td-note-cell" data-label="Ghi chú"><input type="text" placeholder="Ghi chú..." value="' + myNote + '" onchange="saveLocal(\'' + it.id + '\', \'note\', this.value)"></td>'
+        + '<td class="td-act" data-label="Khảo giá"><div class="buy-links">'
         + '<a class="buy-btn btn-shopee" href="' + shopeeUrl(it.name, it.brand) + '" target="_blank">Shopee</a>'
         + '<a class="buy-btn btn-lazada" href="' + lazadaUrl(it.name, it.brand) + '" target="_blank">Lazada</a>'
         + '<a class="buy-btn btn-google" href="' + googleUrl(it.name, it.brand) + '" target="_blank">Google</a>'
