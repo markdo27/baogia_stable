@@ -1,4 +1,4 @@
-const { createClient } = require('@vercel/kv');
+const Redis = require('ioredis');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
@@ -10,17 +10,22 @@ module.exports = async function handler(req, res) {
   }
   
   try {
-    const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-    const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+    const url = process.env.REDIS_URL;
     
-    if (!url || !token) {
-      return res.status(500).json({ error: 'Database environment variables are missing in Vercel settings.' });
+    if (!url) {
+      return res.status(500).json({ error: 'REDIS_URL environment variable is missing in Vercel settings.' });
     }
     
-    const client = createClient({ url, token });
-    const data = await client.get(`baogia_${projectId}`);
+    const redis = new Redis(url);
+    const data = await redis.get(`baogia_${projectId}`);
+    redis.quit();
     
-    res.status(200).json({ data: data || {} });
+    let parsedData = data;
+    if (data && typeof data === 'string') {
+        try { parsedData = JSON.parse(data); } catch(e){}
+    }
+    
+    res.status(200).json({ data: parsedData || {} });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
