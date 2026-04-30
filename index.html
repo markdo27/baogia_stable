@@ -156,10 +156,7 @@
           ✨ Phân tích Ảnh
           <input type="file" id="aiImageFile" accept="image/*" style="display:none" onchange="analyzeImageWithAI(event)" />
         </label>
-        <label class="action-btn btn-csv" title="Thêm mục mới từ CSV">
-          📊 Nhập CSV
-          <input type="file" id="importCsvFile" accept=".csv" style="display:none" onchange="importCSV(event)" />
-        </label>
+        <button class="action-btn btn-csv" onclick="openCsvModal()" title="Dán dữ liệu CSV">📝 Nhập CSV (Paste)</button>
         <button class="action-btn" onclick="logout()" style="color:var(--red)" title="Đăng xuất khỏi hệ thống">🚪 Đăng xuất</button>
       </div>
 
@@ -252,6 +249,26 @@
   <p style="opacity:0.7;font-family:var(--fn);font-size:13px;margin-top:5px;">Quá trình này có thể mất từ 5-15 giây</p>
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<!-- CSV Paste Modal -->
+<div id="csvModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 style="margin:0; font-family:var(--fn);">Nhập dữ liệu CSV</h3>
+      <button class="close-btn" onclick="closeCsvModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px; color:var(--sub-text); margin-bottom:10px;">Dán trực tiếp nội dung CSV (từ Excel hoặc AI) vào ô bên dưới:</p>
+      <div class="code-snippet-container">
+        <textarea id="csvTextArea" placeholder="STT,HẠNG MỤC CÔNG VIỆC / VẬT TƯ,ĐVT,SỐ LƯỢNG,ĐƠN GIÁ BÁO TRONG ẢNH (VNĐ),THÀNH TIỀN...&#10;1,Tủ lạnh Aqua Inverter 512 lít,Cái,1,28900000,28900000,..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn" onclick="closeCsvModal()">Hủy</button>
+      <button class="action-btn btn-csv" style="background:var(--grn); color:white;" onclick="processCsvText()">Xác nhận Nhập</button>
+    </div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>

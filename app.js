@@ -2035,57 +2035,74 @@ async function analyzeImageWithAI(e) {
   }
 }
 
-// --- CSV IMPORT ---
-function importCSV(e) {
-  let file = e.target.files[0];
-  if (!file) return;
-  let reader = new FileReader();
-  reader.onload = function(evt) {
-    let text = evt.target.result;
-    let lines = text.split('\n');
-    let newItems = [];
-    // Skip header line (assuming first line is headers)
-    for (let i = 1; i < lines.length; i++) {
-      let line = lines[i].trim();
-      if (!line) continue;
-      // Basic CSV parsing handling quotes
-      let row = [];
-      let inQuotes = false;
-      let val = '';
-      for (let char of line) {
-        if (char === '"') inQuotes = !inQuotes;
-        else if (char === ',' && !inQuotes) { row.push(val); val = ''; }
-        else val += char;
-      }
-      row.push(val);
-      
-      if (row.length >= 8) {
-        newItems.push({
-          name: row[1] || 'Mục mới',
-          dvt: row[2] || 'Cái',
-          sl: parseInt(row[3]) || 1,
-          dg: parseFloat(row[4]) || 0,
-          tt: parseFloat(row[5]) || 0,
-          ref: row[6] || '',
-          mmax: parseFloat(row[7]) || 0,
-          note: row[9] || '',
-          ev: 'ok',
-          brand: ''
-        });
-      }
-    }
+// --- CSV PASTE MODAL ---
+function openCsvModal() {
+  document.getElementById('csvModal').style.display = 'flex';
+  document.getElementById('csvTextArea').value = '';
+  document.getElementById('csvTextArea').focus();
+}
+
+function closeCsvModal() {
+  document.getElementById('csvModal').style.display = 'none';
+}
+
+function processCsvText() {
+  let text = document.getElementById('csvTextArea').value.trim();
+  if (!text) {
+    alert("Vui lòng dán nội dung CSV!");
+    return;
+  }
+  
+  let lines = text.split('\n');
+  let newItems = [];
+  
+  // Skip header line if STT or HẠNG MỤC exists
+  let startIndex = 0;
+  if (lines[0].toLowerCase().includes("stt") || lines[0].toLowerCase().includes("hạng mục") || lines[0].toLowerCase().includes("hạng muc")) {
+    startIndex = 1;
+  }
+
+  for (let i = startIndex; i < lines.length; i++) {
+    let line = lines[i].trim();
+    if (!line) continue;
     
-    if (newItems.length > 0) {
-      let existing = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
-      let merged = existing.concat(newItems);
-      localStorage.setItem('baogia_custom_csv', JSON.stringify(merged));
-      alert('Đã nhập ' + newItems.length + ' mục từ CSV thành công!');
-      location.reload();
-    } else {
-      alert('Không tìm thấy dữ liệu hợp lệ trong file CSV.');
+    // Basic CSV parsing handling quotes
+    let row = [];
+    let inQuotes = false;
+    let val = '';
+    for (let char of line) {
+      if (char === '"') inQuotes = !inQuotes;
+      else if (char === ',' && !inQuotes) { row.push(val.trim()); val = ''; }
+      else val += char;
     }
-  };
-  reader.readAsText(file);
+    row.push(val.trim());
+    
+    if (row.length >= 6) {
+      newItems.push({
+        name: row[1] || 'Mục mới',
+        dvt: row[2] || 'Cái',
+        sl: parseFloat(row[3]) || 1,
+        dg: parseFloat(row[4]) || 0,
+        tt: parseFloat(row[5]) || 0,
+        ref: row[6] || '',
+        mmax: parseFloat(row[7]) || 0,
+        note: row[8] || row[9] || '',
+        ev: 'ok',
+        brand: ''
+      });
+    }
+  }
+  
+  if (newItems.length > 0) {
+    let existing = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
+    let merged = existing.concat(newItems);
+    localStorage.setItem('baogia_custom_csv', JSON.stringify(merged));
+    alert('Đã nhập ' + newItems.length + ' mục từ CSV thành công!');
+    closeCsvModal();
+    location.reload();
+  } else {
+    alert('Không tìm thấy dữ liệu sản phẩm hợp lệ trong đoạn CSV. Hãy chắc chắn bạn copy đúng format (các cột cách nhau bởi dấu phẩy).');
+  }
 }
 
 // --- AUTHENTICATION ---
