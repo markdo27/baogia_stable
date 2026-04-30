@@ -1598,6 +1598,7 @@ function render() {
 
     if (!items.length) return;
     totalDisp += items.length;
+
     var rows = '';
 
     items.forEach(function(it) {

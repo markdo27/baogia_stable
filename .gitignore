@@ -1,0 +1,13 @@
+# Agent context folders
+.agents/
+skills/
+skills-lock.json
+
+# IDE / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vercel
+.vercel/
