@@ -55,8 +55,7 @@ CRITICAL RULES:
       ],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 8000,
-        responseMimeType: "application/json"
+        maxOutputTokens: 8000
       }
     };
 
