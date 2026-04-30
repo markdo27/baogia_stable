@@ -1370,15 +1370,9 @@ var DATA=[
         note: "Có thể lấy combo cùng máy giặt tại kho để có giá rẻ hơn",
         ev: "high",
         brand: "Electrolux"
-      }
-    ]
-  },
-  {
-    s: "VI",
-    name: "Thiết Bị Bếp & Vệ Sinh Mua Rời",
-    items: [
+      },
       {
-        n: 1,
+        n: 6,
         name: "Bếp từ 2 vùng nấu Hafele HC-I752B 536.61.787",
         dvt: "Cái",
         sl: 1,
@@ -1390,7 +1384,7 @@ var DATA=[
         brand: "Hafele"
       },
       {
-        n: 2,
+        n: 7,
         name: "Máy rửa chén Bosch SMS8TCI01E Serie 8 Zeolith",
         dvt: "Cái",
         sl: 1,
@@ -1400,9 +1394,15 @@ var DATA=[
         note: "Giá tại showroom đang cao, mua tại kho buôn sẽ tiết kiệm vài triệu.",
         ev: "high",
         brand: "Bosch"
-      },
+      }
+    ]
+  },
+  {
+    s: "VI",
+    name: "Thiết Bị Bếp & Vệ Sinh Mua Rời",
+    items: [
       {
-        n: 3,
+        n: 1,
         name: "Vòi xịt vệ sinh INAX CFV-105MM",
         dvt: "Cái",
         sl: 4,
@@ -1414,7 +1414,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 4,
+        n: 2,
         name: "Bồn cầu 1 khối INAX AC-989VN",
         dvt: "Cái",
         sl: 4,
@@ -1426,7 +1426,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 5,
+        n: 3,
         name: "Bồn tiểu nam INAX AU-431VR",
         dvt: "Cái",
         sl: 1,
@@ -1438,7 +1438,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 6,
+        n: 4,
         name: "Bồn tắm xây Galaxy INAX MBV-1500",
         dvt: "Cái",
         sl: 1,
@@ -1450,7 +1450,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 7,
+        n: 5,
         name: "Lavabo treo tường Enic T450",
         dvt: "Cái",
         sl: 1,
@@ -1462,7 +1462,7 @@ var DATA=[
         brand: "Enic"
       },
       {
-        n: 8,
+        n: 6,
         name: "Vòi Lavabo nóng lạnh INAX LFV-1402S-R",
         dvt: "Cái",
         sl: 3,
@@ -1474,7 +1474,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 9,
+        n: 7,
         name: "Vòi bồn tắm gắn bồn INAX BFV-5013S",
         dvt: "Cái",
         sl: 1,
@@ -1486,7 +1486,7 @@ var DATA=[
         brand: "INAX"
       },
       {
-        n: 10,
+        n: 8,
         name: "Bồn cầu nắp điện tử INAX AC-952+CW-KB22AVN",
         dvt: "Cái",
         sl: 1,
