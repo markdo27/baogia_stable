@@ -152,6 +152,10 @@
           📤 Khôi phục
           <input type="file" id="importJsonFile" accept=".json" style="display:none" onchange="importJSON(event)" />
         </label>
+        <label class="action-btn btn-ai" title="Phân tích báo giá bằng AI">
+          ✨ Phân tích Ảnh
+          <input type="file" id="aiImageFile" accept="image/*" style="display:none" onchange="analyzeImageWithAI(event)" />
+        </label>
         <label class="action-btn btn-csv" title="Thêm mục mới từ CSV">
           📊 Nhập CSV
           <input type="file" id="importCsvFile" accept=".csv" style="display:none" onchange="importCSV(event)" />
@@ -240,6 +244,13 @@
   </footer>
 
 </div><!-- /main-wrapper -->
+
+<div id="ai-loading-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:#fff;">
+  <div class="spinner" style="width:40px;height:40px;border:4px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:#fff;animation:spin 1s ease-in-out infinite;margin-bottom:15px;"></div>
+  <h3 style="margin:0;font-family:var(--fn);">✨ AI đang phân tích hình ảnh...</h3>
+  <p style="opacity:0.7;font-family:var(--fn);font-size:13px;margin-top:5px;">Quá trình này có thể mất từ 5-15 giây</p>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script src="app.js"></script>
 </body>

@@ -108,6 +108,8 @@ body.dark .topbar-sort select{background:var(--surface);color:var(--text2)}
 .action-btn:hover{background:var(--surface2);color:var(--text)}
 .btn-cloud{color:var(--blue)}
 .btn-cloud:hover{background:var(--blue-bg);color:var(--blue)}
+.btn-ai{color:#a855f7}
+.btn-ai:hover{background:rgba(168,85,247,0.1);color:#a855f7}
 .btn-csv{color:var(--grn)}
 .btn-csv:hover{background:var(--grn-bg);color:var(--grn)}
 

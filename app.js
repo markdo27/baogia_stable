@@ -1935,6 +1935,70 @@ function importJSON(e) {
   reader.readAsText(file);
 }
 
+// --- AI IMAGE ANALYSIS ---
+async function analyzeImageWithAI(e) {
+  let file = e.target.files[0];
+  if (!file) return;
+
+  // Convert to Base64
+  const toBase64 = f => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(f);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
+  document.getElementById('ai-loading-overlay').style.display = 'flex';
+
+  try {
+    const b64 = await toBase64(file);
+    const res = await fetch('/api/analyze-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: b64 })
+    });
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+
+    const json = await res.json();
+    if (json.data && Array.isArray(json.data)) {
+      // Add a status tracker and ensure data structure
+      let newItems = json.data.map(it => ({
+        name: it.name || 'Mục AI',
+        dvt: it.dvt || 'Cái',
+        sl: it.sl || 1,
+        dg: it.dg || 0,
+        tt: it.tt || (it.dg * (it.sl || 1)),
+        ref: String(it.ref || ''),
+        mmax: it.mmax || parseInt(it.ref) || 0,
+        note: it.note || 'AI Extract',
+        brand: it.brand || '',
+        ev: 'ok'
+      }));
+
+      if (newItems.length > 0) {
+        let existing = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
+        let merged = existing.concat(newItems);
+        localStorage.setItem('baogia_custom_csv', JSON.stringify(merged));
+        alert('✨ AI đã phân tích và thêm ' + newItems.length + ' mục!');
+        location.reload();
+      } else {
+        alert('AI không tìm thấy dữ liệu hợp lệ trong ảnh.');
+      }
+    } else {
+      alert('Phản hồi từ AI không đúng định dạng.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Lỗi phân tích AI: ' + err.message);
+  } finally {
+    document.getElementById('ai-loading-overlay').style.display = 'none';
+    e.target.value = ''; // Reset input
+  }
+}
+
 // --- CSV IMPORT ---
 function importCSV(e) {
   let file = e.target.files[0];
