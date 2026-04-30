@@ -8,22 +8,20 @@ module.exports = async function handler(req, res) {
   if (!imageBase64) return res.status(400).json({ error: 'Missing imageBase64' });
 
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: "Missing GEMINI_API_KEY in Vercel environment variables." });
     }
 
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
-    });
+    // Strip out data:image/jpeg;base64, prefix if present
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
-    const response = await openai.chat.completions.create({
-      model: "gemini-1.5-pro",
-      messages: [
+    const payload = {
+      contents: [
         {
-          role: "system",
-          content: `You are an expert Vietnamese construction and appliance price estimator. 
+          role: "user",
+          parts: [
+            { text: `You are an expert Vietnamese construction and appliance price estimator. 
 Analyze the provided quotation image. Extract the products and return ONLY a valid JSON array of objects. 
 Do not wrap it in markdown block. Just the raw JSON array.
 Each object must have these exact keys:
@@ -37,21 +35,40 @@ Each object must have these exact keys:
 - "mmax": (Number) The maximum market price estimated (Number only). Same as ref if it's a single number.
 - "note": (String) A short Vietnamese note on whether the price in the image is reasonable compared to the market.
 
-Return ONLY the JSON array.`
-        },
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "Extract the data from this quotation image." },
-            { type: "image_url", image_url: { url: imageBase64 } }
+Return ONLY the JSON array.` },
+            {
+              inline_data: {
+                mime_type: "image/jpeg",
+                data: base64Data
+              }
+            }
           ]
         }
       ],
-      max_tokens: 2000,
-      temperature: 0.2
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 2000
+      }
+    };
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
 
-    let raw = response.choices[0].message.content.trim();
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Gemini API Error:", errorText);
+      return res.status(response.status).json({ error: "Gemini API Error: " + errorText });
+    }
+
+    const data = await response.json();
+    if (!data.candidates || !data.candidates[0].content || !data.candidates[0].content.parts) {
+      return res.status(500).json({ error: "Invalid response format from Gemini" });
+    }
+
+    let raw = data.candidates[0].content.parts[0].text.trim();
     if (raw.startsWith('```json')) {
       raw = raw.substring(7, raw.length - 3).trim();
     } else if (raw.startsWith('```')) {
