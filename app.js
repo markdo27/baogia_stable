@@ -1538,11 +1538,21 @@ function injectCustomData() {
     }
     customItems.forEach((it, i) => {
       it.n = i + 1;
+      it.csvIndex = i;
       customSec.items.push(it);
     });
   }
 }
 injectCustomData();
+
+function deleteCsvItem(index) {
+  if (confirm("Bạn có chắc chắn muốn xóa mục này khỏi dữ liệu Import?")) {
+    let existing = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
+    existing.splice(index, 1);
+    localStorage.setItem('baogia_custom_csv', JSON.stringify(existing));
+    location.reload();
+  }
+}
 
 // Pre-calculate fields for all items
 DATA.forEach(sec => {
@@ -1637,8 +1647,7 @@ function updateDashboard() {
   if (acEl) acEl.textContent = agreedCount + ' / ' + totalItems;
   if (otEl) otEl.textContent = fmtShort(originalTotal);
 
-  // "Tổng sau đàm phán" only shows real value when ALL items confirmed
-  if (ctEl) ctEl.textContent = allAgreed ? fmtShort(customTotal) : '0đ';
+  if (ctEl) ctEl.textContent = fmtShort(customTotal);
   if (sdEl) {
     if (allAgreed && savedTotal > 0) {
       sdEl.textContent = 'Tiết kiệm: ' + fmtShort(savedTotal);
@@ -1669,10 +1678,21 @@ function updateDashboard() {
   var sbAgreed = document.getElementById('sb-agreed');
   var sbNeg = document.getElementById('sb-negotiating');
   var sbPend = document.getElementById('sb-pending');
+  var sbCsv = document.getElementById('sb-csv');
+  var navTabCsv = document.getElementById('nav-tab-csv');
+  
   if (sbAll) sbAll.textContent = totalItems;
   if (sbAgreed) sbAgreed.textContent = agreedCount;
   if (sbNeg) sbNeg.textContent = negotiatingCount;
   if (sbPend) sbPend.textContent = pendingCount;
+  
+  var csvSec = DATA.find(s => s.s === 'CSV');
+  if (csvSec && csvSec.items.length > 0) {
+    if (navTabCsv) navTabCsv.style.display = 'flex';
+    if (sbCsv) sbCsv.textContent = csvSec.items.length;
+  } else {
+    if (navTabCsv) navTabCsv.style.display = 'none';
+  }
 }
 
 // --- Theme ---
@@ -1796,6 +1816,7 @@ function render() {
         + '<a class="buy-btn btn-shopee" href="' + shopeeUrl(it.name, it.brand) + '" target="_blank">Shopee</a>'
         + '<a class="buy-btn btn-lazada" href="' + lazadaUrl(it.name, it.brand) + '" target="_blank">Lazada</a>'
         + '<a class="buy-btn btn-google" href="' + googleUrl(it.name, it.brand) + '" target="_blank">Google</a>'
+        + (sec.s === 'CSV' ? '<button class="buy-btn" style="background:var(--red);color:white;border:none;cursor:pointer;padding:2px 8px" onclick="deleteCsvItem(' + it.csvIndex + ')">Xóa</button>' : '')
         + '</div></td>'
         + '</tr>';
     }); // end items.forEach
