@@ -101,6 +101,16 @@ body.dark .topbar-sort select{background:var(--surface);color:var(--text2)}
 .export-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);color:var(--text2);font-family:var(--fn);font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;box-shadow:var(--shadow-sm)}
 .export-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-light)}
 
+.header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cloud-sync, .backup-actions{display:flex;align-items:center;gap:6px;background:var(--surface);padding:4px;border-radius:var(--rs);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.cloud-sync input{border:none;outline:none;background:var(--surface2);padding:5px 8px;border-radius:4px;font-family:var(--fn);font-size:12px;color:var(--text);width:130px}
+.action-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:transparent;border:none;border-radius:4px;color:var(--text2);font-family:var(--fn);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.action-btn:hover{background:var(--surface2);color:var(--text)}
+.btn-cloud{color:var(--blue)}
+.btn-cloud:hover{background:var(--blue-bg);color:var(--blue)}
+.btn-csv{color:var(--grn)}
+.btn-csv:hover{background:var(--grn-bg);color:var(--grn)}
+
 /* ── OVERVIEW CARDS ─────────────────────── */
 .overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
 .ov-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow-sm);transition:.15s}

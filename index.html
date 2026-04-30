@@ -139,10 +139,30 @@
       <h1 class="page-title">Bảng Báo Giá Chi Tiết</h1>
       <p class="page-sub">So sánh đơn giá báo với giá thị trường · <span id="totalItems">—</span> hạng mục</p>
     </div>
-    <button class="export-btn" onclick="window.print()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      <span class="export-text">Xuất báo cáo</span>
-    </button>
+    <div class="header-actions">
+      <div class="cloud-sync" title="Đồng bộ đám mây (Vercel KV)">
+        <input type="text" id="projectId" placeholder="Mã dự án (VD: ABC-123)" />
+        <button class="action-btn btn-cloud" onclick="syncToCloud()">☁️ Lưu</button>
+        <button class="action-btn" onclick="loadFromCloud()">⬇️ Tải</button>
+      </div>
+      
+      <div class="backup-actions">
+        <button class="action-btn" onclick="exportJSON()" title="Tải Backup file (JSON)">📥 Backup</button>
+        <label class="action-btn" title="Khôi phục từ Backup">
+          📤 Khôi phục
+          <input type="file" id="importJsonFile" accept=".json" style="display:none" onchange="importJSON(event)" />
+        </label>
+        <label class="action-btn btn-csv" title="Thêm mục mới từ CSV">
+          📊 Nhập CSV
+          <input type="file" id="importCsvFile" accept=".csv" style="display:none" onchange="importCSV(event)" />
+        </label>
+      </div>
+
+      <button class="export-btn action-btn" onclick="window.print()" title="In báo cáo (PDF)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span class="export-text">In PDF</span>
+      </button>
+    </div>
   </div>
 
   <!-- Overview Cards -->

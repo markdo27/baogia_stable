@@ -1525,6 +1525,25 @@ function parseRef(ref) {
   return { min: 0, max: 0 };
 }
 
+// --- Custom CSV Data Injection ---
+function injectCustomData() {
+  let customItems = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
+  if (customItems.length > 0) {
+    let customSec = DATA.find(s => s.s === 'CSV');
+    if (!customSec) {
+      customSec = { s: 'CSV', name: 'Dữ Liệu Import (CSV)', items: [] };
+      DATA.push(customSec);
+    } else {
+      customSec.items = []; // reset before injecting
+    }
+    customItems.forEach((it, i) => {
+      it.n = i + 1;
+      customSec.items.push(it);
+    });
+  }
+}
+injectCustomData();
+
 // Pre-calculate fields for all items
 DATA.forEach(sec => {
   sec.items.forEach(it => {
@@ -1849,5 +1868,124 @@ document.getElementById('tabs').addEventListener('click', function(e) {
 });
 
 document.getElementById('sortBy').addEventListener('change', function(e) { sortBy = e.target.value; render(); });
+
+// --- CLOUD SYNC ---
+async function syncToCloud() {
+  let pid = document.getElementById('projectId').value.trim();
+  if (!pid) return alert('Vui lòng nhập Mã dự án để lưu!');
+  let data = {
+    baogia_data: localStorage.getItem('baogia_data') || '{}',
+    baogia_custom_csv: localStorage.getItem('baogia_custom_csv') || '[]'
+  };
+  try {
+    let res = await fetch('/api/save', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId: pid, data: JSON.stringify(data) })
+    });
+    if (res.ok) alert('Đã lưu dữ liệu lên Cloud thành công! (Mã: ' + pid + ')');
+    else alert('Lỗi khi lưu: ' + (await res.text()));
+  } catch (e) { alert('Không thể kết nối đến server.'); }
+}
+
+async function loadFromCloud() {
+  let pid = document.getElementById('projectId').value.trim();
+  if (!pid) return alert('Vui lòng nhập Mã dự án để tải!');
+  try {
+    let res = await fetch('/api/load?projectId=' + encodeURIComponent(pid));
+    if (res.ok) {
+      let json = await res.json();
+      if (!json.data) return alert('Không tìm thấy dữ liệu cho mã này.');
+      let parsed = typeof json.data === 'string' ? JSON.parse(json.data) : json.data;
+      if (parsed.baogia_data) localStorage.setItem('baogia_data', parsed.baogia_data);
+      if (parsed.baogia_custom_csv) localStorage.setItem('baogia_custom_csv', parsed.baogia_custom_csv);
+      alert('Đã tải dữ liệu thành công!');
+      location.reload();
+    } else {
+      alert('Lỗi khi tải: ' + (await res.text()));
+    }
+  } catch (e) { alert('Không thể kết nối đến server.'); }
+}
+
+// --- BACKUP EXPORT/IMPORT ---
+function exportJSON() {
+  let data = {
+    baogia_data: localStorage.getItem('baogia_data') || '{}',
+    baogia_custom_csv: localStorage.getItem('baogia_custom_csv') || '[]'
+  };
+  let blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url; a.download = 'baogia_backup_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+}
+
+function importJSON(e) {
+  let file = e.target.files[0];
+  if (!file) return;
+  let reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      let data = JSON.parse(evt.target.result);
+      if (data.baogia_data) localStorage.setItem('baogia_data', data.baogia_data);
+      if (data.baogia_custom_csv) localStorage.setItem('baogia_custom_csv', data.baogia_custom_csv);
+      alert('Phục hồi dữ liệu thành công!');
+      location.reload();
+    } catch (err) { alert('File không hợp lệ.'); }
+  };
+  reader.readAsText(file);
+}
+
+// --- CSV IMPORT ---
+function importCSV(e) {
+  let file = e.target.files[0];
+  if (!file) return;
+  let reader = new FileReader();
+  reader.onload = function(evt) {
+    let text = evt.target.result;
+    let lines = text.split('\n');
+    let newItems = [];
+    // Skip header line (assuming first line is headers)
+    for (let i = 1; i < lines.length; i++) {
+      let line = lines[i].trim();
+      if (!line) continue;
+      // Basic CSV parsing handling quotes
+      let row = [];
+      let inQuotes = false;
+      let val = '';
+      for (let char of line) {
+        if (char === '"') inQuotes = !inQuotes;
+        else if (char === ',' && !inQuotes) { row.push(val); val = ''; }
+        else val += char;
+      }
+      row.push(val);
+      
+      if (row.length >= 8) {
+        newItems.push({
+          name: row[1] || 'Mục mới',
+          dvt: row[2] || 'Cái',
+          sl: parseInt(row[3]) || 1,
+          dg: parseFloat(row[4]) || 0,
+          tt: parseFloat(row[5]) || 0,
+          ref: row[6] || '',
+          mmax: parseFloat(row[7]) || 0,
+          note: row[9] || '',
+          ev: 'ok',
+          brand: ''
+        });
+      }
+    }
+    
+    if (newItems.length > 0) {
+      let existing = JSON.parse(localStorage.getItem('baogia_custom_csv') || '[]');
+      let merged = existing.concat(newItems);
+      localStorage.setItem('baogia_custom_csv', JSON.stringify(merged));
+      alert('Đã nhập ' + newItems.length + ' mục từ CSV thành công!');
+      location.reload();
+    } else {
+      alert('Không tìm thấy dữ liệu hợp lệ trong file CSV.');
+    }
+  };
+  reader.readAsText(file);
+}
 
 render();
