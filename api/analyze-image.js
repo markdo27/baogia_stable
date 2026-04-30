@@ -19,20 +19,26 @@ module.exports = async function handler(req, res) {
         {
           role: "user",
           parts: [
-            { text: `You are an expert Vietnamese construction and appliance price estimator. 
-Analyze the provided quotation image. Extract the products and return ONLY a valid JSON array of objects. 
-Each object must have these exact keys:
-- "name": (String) Name of the item
-- "brand": (String) Brand if available, else ""
-- "dvt": (String) Unit (e.g. "Cái", "Bộ")
-- "sl": (Number) Quantity
-- "dg": (Number) Unit price listed in the image (Đơn giá báo)
-- "tt": (Number) Total price listed in the image (Thành tiền)
-- "ref": (String) Format: "X" representing the estimated market price (Giá thị trường) based on your knowledge. E.g. "15000000".
-- "mmax": (Number) The maximum market price estimated (Number only). Same as ref if it's a single number.
-- "note": (String) A short Vietnamese note on whether the price in the image is reasonable compared to the market.
+            { text: `You are an expert Vietnamese construction and appliance price estimator and data extractor.
+Analyze the provided quotation/invoice image very carefully.
+Extract every product listed in the image and return ONLY a valid JSON array of objects.
+Do not miss any items. If an item has a price, you MUST extract it accurately.
 
-IMPORTANT: You must escape any double quotes inside strings (e.g. "Ống 1/2\\""). Make sure the JSON is perfectly well-formed.` },
+Each object must have these exact keys (use Number type for prices, 0 if missing):
+- "name": (String) Name of the item exactly as written in the image.
+- "brand": (String) Extract the brand from the name (e.g., "Panasonic", "Aqua", "Toto", "Daikin"). If none, use "".
+- "dvt": (String) Unit (e.g., "Cái", "Bộ", "M2"). Default to "Cái" if not found.
+- "sl": (Number) Quantity. Default to 1.
+- "dg": (Number) Unit price (Đơn giá) exactly as listed in the image. Remove commas/dots, return raw integer (e.g. 15000000).
+- "tt": (Number) Total price (Thành tiền) exactly as listed in the image. Remove commas/dots, return raw integer.
+- "ref": (String) Estimate the current market retail price in Vietnam for this item based on your knowledge. Return as plain string number, e.g. "14500000". If unknown, use "0".
+- "mmax": (Number) The exact same value as "ref", but as a Number. If unknown, use 0.
+- "note": (String) A short Vietnamese comment evaluating if the quoted price (dg) is expensive, cheap, or reasonable compared to the market price (mmax).
+
+CRITICAL RULES:
+1. "dg" and "tt" MUST be exact numbers extracted from the image. Do NOT guess them. Look for columns like "Đơn giá", "Giá", "Thành tiền".
+2. "mmax" MUST be your own knowledge-based estimation, NOT extracted from the image.
+3. You must escape any double quotes inside strings (e.g. "Ống 1/2\\""). Make sure the JSON is perfectly well-formed.` },
             {
               inline_data: {
                 mime_type: "image/jpeg",
