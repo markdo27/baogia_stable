@@ -21,7 +21,6 @@ module.exports = async function handler(req, res) {
           parts: [
             { text: `You are an expert Vietnamese construction and appliance price estimator. 
 Analyze the provided quotation image. Extract the products and return ONLY a valid JSON array of objects. 
-Do not wrap it in markdown block. Just the raw JSON array.
 Each object must have these exact keys:
 - "name": (String) Name of the item
 - "brand": (String) Brand if available, else ""
@@ -33,7 +32,7 @@ Each object must have these exact keys:
 - "mmax": (Number) The maximum market price estimated (Number only). Same as ref if it's a single number.
 - "note": (String) A short Vietnamese note on whether the price in the image is reasonable compared to the market.
 
-Return ONLY the JSON array.` },
+IMPORTANT: You must escape any double quotes inside strings (e.g. "Ống 1/2\\""). Make sure the JSON is perfectly well-formed.` },
             {
               inline_data: {
                 mime_type: "image/jpeg",
@@ -44,8 +43,9 @@ Return ONLY the JSON array.` },
         }
       ],
       generationConfig: {
-        temperature: 0.2,
-        maxOutputTokens: 2000
+        temperature: 0.1,
+        maxOutputTokens: 8000,
+        responseMimeType: "application/json"
       }
     };
 
