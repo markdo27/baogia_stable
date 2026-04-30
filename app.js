@@ -1372,6 +1372,132 @@ var DATA=[
         brand: "Electrolux"
       }
     ]
+  },
+  {
+    s: "VI",
+    name: "Thiết Bị Bếp & Vệ Sinh Mua Rời",
+    items: [
+      {
+        n: 1,
+        name: "Bếp từ 2 vùng nấu Hafele HC-I752B 536.61.787",
+        dvt: "Cái",
+        sl: 1,
+        dg: 12990000,
+        tt: 12990000,
+        ref: "11500000",
+        note: "Có thể tìm mua tại các tổng kho thiết bị bếp nhập khẩu để có giá mềm hơn.",
+        ev: "high",
+        brand: "Hafele"
+      },
+      {
+        n: 2,
+        name: "Máy rửa chén Bosch SMS8TCI01E Serie 8 Zeolith",
+        dvt: "Cái",
+        sl: 1,
+        dg: 26300000,
+        tt: 26300000,
+        ref: "23800000",
+        note: "Giá tại showroom đang cao, mua tại kho buôn sẽ tiết kiệm vài triệu.",
+        ev: "high",
+        brand: "Bosch"
+      },
+      {
+        n: 3,
+        name: "Vòi xịt vệ sinh INAX CFV-105MM",
+        dvt: "Cái",
+        sl: 4,
+        dg: 979000,
+        tt: 3916000,
+        ref: "890000",
+        note: "Giá ảnh là giá bìa hãng, mua đại lý luôn có chiết khấu thêm.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 4,
+        name: "Bồn cầu 1 khối INAX AC-989VN",
+        dvt: "Cái",
+        sl: 4,
+        dg: 6305000,
+        tt: 25220000,
+        ref: "4600000",
+        note: "Đại lý INAX thường chiết khấu mã này tới 25%.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 5,
+        name: "Bồn tiểu nam INAX AU-431VR",
+        dvt: "Cái",
+        sl: 1,
+        dg: 2919000,
+        tt: 2919000,
+        ref: "2850000",
+        note: "Giá trên web đã tương đối sát giá thị trường.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 6,
+        name: "Bồn tắm xây Galaxy INAX MBV-1500",
+        dvt: "Cái",
+        sl: 1,
+        dg: 14180000,
+        tt: 14180000,
+        ref: "11500000",
+        note: "Mua tại đại lý cấp 1 giúp tiết kiệm đáng kể.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 7,
+        name: "Lavabo treo tường Enic T450",
+        dvt: "Cái",
+        sl: 1,
+        dg: 3900000,
+        tt: 3900000,
+        ref: "3900000",
+        note: "Hãng bán độc quyền D2C 1 giá. Có thể cân nhắc đổi sang INAX/TOTO cùng tầm tiền.",
+        ev: "ok",
+        brand: "Enic"
+      },
+      {
+        n: 8,
+        name: "Vòi Lavabo nóng lạnh INAX LFV-1402S-R",
+        dvt: "Cái",
+        sl: 3,
+        dg: 1773000,
+        tt: 5319000,
+        ref: "1400000",
+        note: "Giá bìa catalogue. Đại lý INAX thường chiết khấu mã này cao.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 9,
+        name: "Vòi bồn tắm gắn bồn INAX BFV-5013S",
+        dvt: "Cái",
+        sl: 1,
+        dg: 13266000,
+        tt: 13266000,
+        ref: "9600000",
+        note: "Mã sen vòi cao cấp này các tổng kho INAX chiết khấu rất sâu.",
+        ev: "high",
+        brand: "INAX"
+      },
+      {
+        n: 10,
+        name: "Bồn cầu nắp điện tử INAX AC-952+CW-KB22AVN",
+        dvt: "Cái",
+        sl: 1,
+        dg: 26464000,
+        tt: 26464000,
+        ref: "21000000",
+        note: "Nên gộp mua chung cùng các thiết bị INAX khác để ép giá.",
+        ev: "high",
+        brand: "INAX"
+      }
+    ]
   }
 ];
 
