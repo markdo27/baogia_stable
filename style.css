@@ -423,36 +423,138 @@ td{padding:11px 14px;vertical-align:middle}
   .export-btn{justify-content:center;padding:10px;font-size:14px}
 }
 
+
 /* ── PRINT ─────────────────────── */
 @media print {
-  .sidebar, .topbar, .page-header, .overview-grid, .content-tabs, .td-act, th:last-child {
+  /* ── Hide UI chrome ── */
+  .sidebar, .sb-overlay, .topbar, .page-header, .overview-grid,
+  .content-tabs, .mobile-menu-btn, .site-footer,
+  #ai-loading-overlay, #csvModal {
     display: none !important;
   }
-  .main-wrapper {
-    margin-left: 0 !important;
-    padding: 0 !important;
+
+  /* ── Page setup: A4 landscape, tight margins ── */
+  @page { margin: 10mm 12mm; size: A4 landscape; }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5px !important;
+    font-family: 'Inter', Arial, sans-serif !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-  .content-card {
-    border: none;
-    box-shadow: none;
-  }
-  body {
-    background: #fff;
+  .main-wrapper { margin-left: 0 !important; padding: 0 !important; }
+
+  /* ── Print header injected via CSS ── */
+  .content-card::before {
+    content: 'BẢNG YÊU CẦU BÁO GIÁ';
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 3px;
     color: #000;
   }
-  .section, .tbl-wrap, table, tbody, tr, td, th {
-    display: table;
-    width: 100%;
+  .content-card::after {
+    content: 'Kính đề nghị Quý đơn vị vui lòng cung cấp đơn giá, thương hiệu và thành tiền vào các ô trống tương ứng.';
+    display: block;
+    text-align: center;
+    font-size: 9.5px;
+    color: #444;
+    margin-bottom: 10px;
+    font-style: italic;
   }
+  .content-card { border: none !important; box-shadow: none !important; padding: 0 !important; }
+
+  /* ── FORCE table layout (override responsive card mode) ── */
+  .tbl-wrap { overflow: visible !important; display: block !important; }
   table {
-    page-break-inside: auto;
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 10px !important;
+    page-break-inside: auto !important;
+    table-layout: auto !important;
+  }
+  thead { display: table-header-group !important; }
+  tbody {
+    display: table-row-group !important;
+    flex-direction: unset !important;
+    gap: 0 !important;
+    padding: 0 !important;
   }
   tr {
-    page-break-inside: avoid;
-    page-break-after: auto;
+    display: table-row !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border-left: none !important;
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
   }
-  
-  /* Print Blank Quote (Hide Prices) */
+  th, td {
+    display: table-cell !important;
+    padding: 4px 6px !important;
+    border: 1px solid #ccc !important;
+    vertical-align: middle !important;
+    text-align: left !important;
+    background: transparent !important;
+    width: auto !important;
+  }
+  td::before { display: none !important; content: none !important; }
+  th {
+    background: #efefef !important;
+    font-weight: 700 !important;
+    font-size: 9.5px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #000 !important;
+  }
+
+  /* ── Section headers ── */
+  .section { page-break-inside: auto !important; animation: none !important; border: none !important; }
+  .sec-head {
+    background: #e0e0e0 !important;
+    border: 1px solid #999 !important;
+    border-bottom: none !important;
+    padding: 5px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    page-break-after: avoid !important;
+  }
+  .sec-title { font-size: 11px !important; font-weight: 700 !important; color: #000 !important; }
+  .sec-badge {
+    font-size: 9.5px !important; padding: 1px 6px !important;
+    border: 1px solid #777 !important; border-radius: 3px !important;
+    font-weight: 700 !important; color: #000 !important; background: #fff !important;
+  }
+  .sec-cnt { font-size: 9.5px !important; color: #555 !important; background: transparent !important; border: none !important; }
+  .chevron { display: none !important; }
+
+  /* ── Item cell tweaks ── */
+  .td-n { width: 24px !important; text-align: center !important; color: #777 !important; font-size: 9.5px !important; }
+  .td-name { min-width: unset !important; }
+  .td-name strong { font-size: 10px !important; display: inline !important; font-weight: 600 !important; }
+  .td-brand { width: 90px !important; text-align: center !important; }
+  .td-unit { width: 50px !important; text-align: center !important; line-height: 1.3 !important; }
+  .qty-val { font-size: 9.5px !important; display: inline !important; color: #000 !important; font-weight: 700 !important; }
+  .brand-pill {
+    background: transparent !important; border: none !important;
+    color: #000 !important; font-weight: 600 !important; padding: 0 !important; font-size: 10px !important;
+  }
+  .no-brand { color: #aaa !important; font-size: 9.5px !important; }
+  .price-bar-wrap, .over-badge, .item-note { display: none !important; }
+
+  /* Always hide action column */
+  .td-act { display: none !important; }
+  thead th:last-child { display: none !important; }
+
+  /* ── BLANK QUOTE MODE (Mời thầu) ── */
   body.print-blank .td-price,
   body.print-blank .td-ref,
   body.print-blank .td-save,
@@ -460,20 +562,20 @@ td{padding:11px 14px;vertical-align:middle}
   body.print-blank .td-custom,
   body.print-blank .td-status,
   body.print-blank .td-note-cell,
-  body.print-blank th:nth-child(5),
-  body.print-blank th:nth-child(6),
-  body.print-blank th:nth-child(7),
-  body.print-blank th:nth-child(8),
-  body.print-blank th:nth-child(9),
-  body.print-blank th:nth-child(10),
-  body.print-blank th:nth-child(11),
+  body.print-blank thead th:nth-child(5),
+  body.print-blank thead th:nth-child(6),
+  body.print-blank thead th:nth-child(7),
+  body.print-blank thead th:nth-child(8),
+  body.print-blank thead th:nth-child(9),
+  body.print-blank thead th:nth-child(10),
+  body.print-blank thead th:nth-child(11),
+  body.print-blank thead th:nth-child(12),
   body.print-blank .sec-saving,
   body.print-blank .sec-sum-tt,
   body.print-blank .sec-sum-mkt,
-  body.print-blank .sec-tag,
-  body.print-blank .price-bar-wrap,
-  body.print-blank .over-badge,
-  body.print-blank .td-name .item-note {
+  body.print-blank .sec-tag {
     display: none !important;
   }
+  body.print-blank .report-container { display: none !important; }
 }
+
