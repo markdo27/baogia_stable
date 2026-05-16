@@ -1745,9 +1745,130 @@ function toggleSidebar() {
   }
 }
 
+function renderReport() {
+  var main = document.getElementById('main');
+  var empty = document.getElementById('empty');
+  empty.classList.add('hidden');
+  
+  var keepItems = [];
+  var optimizeItems = [];
+  
+  DATA.forEach(function(sec) {
+    if (sec.s === 'CSV') return;
+    sec.items.forEach(function(it) {
+      if (it.ev === 'high' || it.overPct > 20 || sec.s === 'V' || sec.s === 'VI') {
+        optimizeItems.push({ ...it, sec_s: sec.s });
+      } else {
+        keepItems.push({ ...it, sec_s: sec.s });
+      }
+    });
+  });
+
+  // Calculate totals
+  var potentialSave = optimizeItems.reduce((s, it) => s + it.saving, 0);
+
+  var keepRows = keepItems.map(it => `<tr>
+    <td><strong>${it.name}</strong><br><span style="font-size:11px;color:var(--text3)">${it.note || ''}</span></td>
+    <td>${it.dvt} / ${it.sl}</td>
+    <td style="text-align:right;font-weight:600">${fmt(it.tt)}</td>
+    <td><span style="color:var(--grn);font-weight:600;font-size:12px;background:var(--grn-bg);padding:2px 6px;border-radius:4px">Nên làm</span></td>
+  </tr>`).join('');
+
+  var optRows = optimizeItems.map(it => {
+    var strategy = "Đàm phán giá";
+    if (it.overPct > 20) strategy = "Đàm phán giảm " + it.overPct + "% so với thị trường";
+    if (it.sec_s === 'V' || it.sec_s === 'VI') strategy = "Tự mua tại kho/đại lý cấp 1";
+    
+    return `<tr>
+      <td><strong>${it.name}</strong></td>
+      <td style="text-align:right">${fmt(it.tt)}</td>
+      <td style="text-align:right;color:var(--red);font-weight:600">${it.saving > 0 ? fmt(it.saving) : 'Xem xét'}</td>
+      <td style="font-size:12.5px">${strategy}</td>
+    </tr>`;
+  }).join('');
+
+  var html = `
+    <div class="report-container">
+      <div class="report-title">Báo Cáo Phân Tích Chuyên Sâu (AI)</div>
+      
+      <div class="report-summary-box">
+        <h4>Tổng quan đánh giá</h4>
+        <p>Phát hiện <strong>${optimizeItems.length}</strong> hạng mục có khả năng tối ưu chi phí (giá cao hoặc có thể tự mua).</p>
+        <p>Tổng ngân sách có thể tiết kiệm dự kiến: <strong>${fmt(potentialSave)}</strong></p>
+      </div>
+
+      <div class="report-section">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ylw)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Hạng Mục Cần Tối Ưu / Cắt Giảm</h3>
+        <table class="report-table">
+          <thead><tr><th>Hạng mục</th><th style="text-align:right">Thành tiền (Báo giá)</th><th style="text-align:right">Tiết kiệm dự kiến</th><th>Chiến lược tối ưu</th></tr></thead>
+          <tbody>${optRows || '<tr><td colspan="4" style="text-align:center">Không có hạng mục nào.</td></tr>'}</tbody>
+        </table>
+      </div>
+
+      <div class="report-section">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--grn)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Hạng Mục Ưu Tiên Cần Làm (Giá hợp lý)</h3>
+        <table class="report-table">
+          <thead><tr><th>Hạng mục</th><th>ĐVT / SL</th><th style="text-align:right">Thành tiền</th><th>Đánh giá</th></tr></thead>
+          <tbody>${keepRows || '<tr><td colspan="4" style="text-align:center">Không có hạng mục nào.</td></tr>'}</tbody>
+        </table>
+      </div>
+
+      <div class="report-section">
+        <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Đề Xuất Tiến Độ Thanh Toán (Dự án 2.5 - 3 tháng)</h3>
+        <div class="payment-timeline">
+          <div class="timeline-item">
+            <div class="timeline-pct">20%</div>
+            <div class="timeline-content">
+              <h4>Giai đoạn 1: Ký hợp đồng & Tập kết vật tư</h4>
+              <p>Thanh toán sau khi ký HĐ thi công, nhà thầu tập kết vật tư thiết yếu và nhân công bắt đầu vào việc (Phá dỡ, chuẩn bị mặt bằng).</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-pct">30%</div>
+            <div class="timeline-content">
+              <h4>Giai đoạn 2: Hoàn thành phần thô & Điện nước (Tháng 1)</h4>
+              <p>Sau khi nghiệm thu xong xây tường, trát tường, đi xong hệ thống ống điện nước âm tường, cán nền.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-pct">25%</div>
+            <div class="timeline-content">
+              <h4>Giai đoạn 3: Hoàn thiện bề mặt (Tháng 2)</h4>
+              <p>Sau khi nghiệm thu ốp lát gạch, đóng trần thạch cao, sơn bả lớp 1 hoàn tất.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-pct">20%</div>
+            <div class="timeline-content">
+              <h4>Giai đoạn 4: Lắp đặt nội thất, thiết bị (Tháng 3)</h4>
+              <p>Thanh toán khi đồ gỗ, thiết bị vệ sinh, thiết bị điện đã được lắp đặt hoàn thiện. Khối lượng công việc đạt 95% - 100%, dọn vệ sinh công nghiệp.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-pct">5%</div>
+            <div class="timeline-content">
+              <h4>Giai đoạn 5: Bàn giao & Bảo hành</h4>
+              <p>Thanh toán sau khi nghiệm thu bàn giao đưa vào sử dụng (có thể giữ lại 1 phần làm tiền bảo hành trong 1 năm đầu).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  main.innerHTML = html;
+  
+  document.getElementById('totalItems').textContent = optimizeItems.length + keepItems.length;
+}
+
 function render() {
   var main = document.getElementById('main');
   var empty = document.getElementById('empty');
+  
+  if (filter === 'report') {
+    renderReport();
+    return;
+  }
+  
   var html = ''; var totalDisp = 0;
 
   DATA.forEach(function(sec) {

@@ -253,6 +253,108 @@ td{padding:11px 14px;vertical-align:middle}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .section{animation:fadeUp .22s ease both}
 
+/* ── REPORT VIEW ─────────────────────── */
+.report-container {
+  padding: 24px;
+  animation: fadeUp .22s ease both;
+}
+.report-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text);
+  border-bottom: 2px solid var(--acc);
+  padding-bottom: 12px;
+  display: inline-block;
+}
+.report-section {
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.report-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 10px;
+}
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.report-table th, .report-table td {
+  padding: 10px 14px;
+  border: 1px solid var(--border-subtle);
+  text-align: left;
+}
+.report-table th {
+  background: var(--surface2);
+  color: var(--text3);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.report-table tbody tr:hover {
+  background: var(--surface2);
+}
+.report-summary-box {
+  background: var(--acc-light);
+  border-left: 4px solid var(--acc);
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.report-summary-box h4 {
+  margin-bottom: 8px;
+  color: var(--acc);
+  font-size: 15px;
+}
+.report-summary-box p {
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.payment-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  background: var(--surface2);
+  padding: 16px;
+  border-radius: var(--rs);
+  border-left: 4px solid var(--blue);
+}
+.timeline-pct {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue);
+  width: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.timeline-content h4 {
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 15px;
+}
+.timeline-content p {
+  color: var(--text2);
+  font-size: 13px;
+}
+
 /* ── MOBILE MENU & OVERLAY ─────────────────────── */
 .mobile-menu-btn{display:none;align-items:center;justify-content:center;width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);color:var(--text2);cursor:pointer;transition:.15s;padding:0}
 .mobile-menu-btn:hover{color:var(--text);border-color:var(--text3)}
