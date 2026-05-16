@@ -2055,6 +2055,20 @@ async function loadFromCloud() {
   } catch (e) { alert('Không thể kết nối đến server.'); }
 }
 
+function printBlankQuote() {
+  document.body.classList.add('print-blank');
+  // Make sure we are not in report view, but in all items view
+  if (filter === 'report') {
+    setFilter('all', document.querySelector('.sb-item[data-f="all"]'));
+  }
+  setTimeout(function() {
+    window.print();
+    setTimeout(function() {
+      document.body.classList.remove('print-blank');
+    }, 500);
+  }, 100);
+}
+
 // --- BACKUP EXPORT/IMPORT ---
 function exportJSON() {
   let data = {

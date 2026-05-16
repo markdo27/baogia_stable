@@ -422,3 +422,58 @@ td{padding:11px 14px;vertical-align:middle}
   .page-title{font-size:22px}
   .export-btn{justify-content:center;padding:10px;font-size:14px}
 }
+
+/* ── PRINT ─────────────────────── */
+@media print {
+  .sidebar, .topbar, .page-header, .overview-grid, .content-tabs, .td-act, th:last-child {
+    display: none !important;
+  }
+  .main-wrapper {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+  .content-card {
+    border: none;
+    box-shadow: none;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .section, .tbl-wrap, table, tbody, tr, td, th {
+    display: table;
+    width: 100%;
+  }
+  table {
+    page-break-inside: auto;
+  }
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  
+  /* Print Blank Quote (Hide Prices) */
+  body.print-blank .td-price,
+  body.print-blank .td-ref,
+  body.print-blank .td-save,
+  body.print-blank .td-total,
+  body.print-blank .td-custom,
+  body.print-blank .td-status,
+  body.print-blank .td-note-cell,
+  body.print-blank th:nth-child(5),
+  body.print-blank th:nth-child(6),
+  body.print-blank th:nth-child(7),
+  body.print-blank th:nth-child(8),
+  body.print-blank th:nth-child(9),
+  body.print-blank th:nth-child(10),
+  body.print-blank th:nth-child(11),
+  body.print-blank .sec-saving,
+  body.print-blank .sec-sum-tt,
+  body.print-blank .sec-sum-mkt,
+  body.print-blank .sec-tag,
+  body.print-blank .price-bar-wrap,
+  body.print-blank .over-badge,
+  body.print-blank .td-name .item-note {
+    display: none !important;
+  }
+}
