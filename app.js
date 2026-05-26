@@ -1860,12 +1860,368 @@ function renderReport() {
   document.getElementById('totalItems').textContent = optimizeItems.length + keepItems.length;
 }
 
+function renderCompare() {
+  var main = document.getElementById('main');
+  var empty = document.getElementById('empty');
+  empty.classList.add('hidden');
+
+  // Defined mappings of direct comparisons
+  var COMPARISON_MAPPINGS = [
+    {
+      category: "Xây dựng thô",
+      name: "Xây tường 100 + tô trát",
+      myId: "II-2",
+      refSection: "construction",
+      refItemN: 3,
+      note: "Nhà thầu của bạn đang báo giá xây tường 100 + tô cao hơn 20% so với căn Lavila (781.000đ vs 650.000đ). Với khối lượng 600 m2, đây là cơ hội đàm phán giảm khoảng 78.6 triệu!"
+    },
+    {
+      category: "Xây dựng thô",
+      name: "Cán nền xi măng cát",
+      myId: "II-1",
+      refSection: "construction",
+      refItemN: 6,
+      note: "Đơn giá cán nền của bạn (298.200đ/m2) khá tương đồng với căn Lavila (290.000đ/m2). Chênh lệch chỉ khoảng 3% (Hợp lý)."
+    },
+    {
+      category: "Xây dựng thô",
+      name: "Trần thạch cao phẳng Vĩnh Tường",
+      myId: "II-7",
+      refSection: "construction",
+      refItemN: 8,
+      note: "Nhà thầu đang báo giá trần thạch cao phẳng cao hơn 8% (269.800đ vs 250.000đ). Với 320 m2 trần, bạn có thể đàm phán giảm khoảng 6.3 triệu."
+    },
+    {
+      category: "Vật liệu hoàn thiện",
+      name: "Sàn gỗ công nghiệp 8mm",
+      myId: "II-15",
+      refSection: "construction",
+      refItemN: 12,
+      note: "Bạn đang chọn sàn gỗ Egger 8mm của Đức (724.200đ/m2), trong khi căn Lavila dùng sàn gỗ Moser Trung Quốc/Việt Nam (550.000đ/m2). Egger cao cấp hơn nhưng bạn có thể cân nhắc chuyển đổi nếu muốn tối ưu ngân sách."
+    },
+    {
+      category: "Vật liệu hoàn thiện",
+      name: "Sơn nước nội thất 2 lớp",
+      myId: "II-14",
+      refSection: "construction",
+      refItemN: 15,
+      note: "Bạn sử dụng sơn Dulux Easy Clean (170.400đ/m2), căn Lavila dùng sơn Jotun trong nhà (155.000đ/m2). Hai thương hiệu có chất lượng tương đương, bạn có thể đề xuất đàm phán giảm đơn giá sơn Dulux về mức 155.000đ - 160.000đ/m2."
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Dây điện CV 2.5mm2 Cadivi",
+      myId: "I-10",
+      refSection: "construction",
+      refItemN: 104,
+      note: "⚠️ Cực kỳ quan trọng: Dây Cadivi 2.5mm2 của bạn bị kê giá cao hơn 46% (19.698đ vs 13.500đ). Với 3,000 mét dây, bạn đang bị đắt hơn 18.5 triệu! Cần đàm phán yêu cầu giảm ngay đơn giá vật tư này!"
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Dây điện CV 1.5mm2 Cadivi",
+      myId: "I-11",
+      refSection: "construction",
+      refItemN: 103,
+      note: "⚠️ Dây Cadivi 1.5mm2 của bạn cao hơn 27% (12.087đ vs 9.500đ). Với 4,200 mét dây, tổng tiền chênh lệch lên tới 10.8 triệu. Đề nghị giảm giá về mức thị trường 9.500đ/m."
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Dây điện CV 4.0mm2 Cadivi",
+      myId: "I-9",
+      refSection: "construction",
+      refItemN: 105,
+      note: "Dây Cadivi 4.0mm2 bị kê giá cao hơn 42% (29.882đ vs 21.000đ). Chênh lệch 1.5 triệu cho 180m dây."
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Ống đồng máy lạnh + phụ kiện",
+      myId: "I-28",
+      refSection: "construction",
+      refItemN: 78,
+      note: "Đơn giá ống đồng của bạn (426.000đ/m) cao hơn 23% so với Lavila (345.000đ/m). Nên làm việc lại để giảm giá ống đồng."
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Ống nước ngưng máy lạnh d27/d21",
+      myId: "I-29",
+      refSection: "construction",
+      refItemN: 80,
+      note: "⚠️ Ống nước ngưng d27 của bạn (213.000đ/m bao gồm cách nhiệt) cao gấp đôi so với ống d21 của căn Lavila (110.000đ/md). Mặc dù ống d27 to hơn, nhưng đơn giá 213k là quá cao. Hãy đàm phán giảm về ~120k - 140k/m."
+    },
+    {
+      category: "Vật tư M&E",
+      name: "Cáp mạng Cat6",
+      myId: "I-12",
+      refSection: "construction",
+      refItemN: 107,
+      note: "Cáp mạng của bạn (Panduit Cat6, 20.100đ/m) cao hơn 34% so với dây mạng Lavila (15.000đ/m). Bạn có thể yêu cầu giữ nguyên chất lượng Panduit nhưng thương lượng đơn giá tốt hơn."
+    },
+    {
+      category: "Vật liệu hoàn thiện",
+      name: "Chống thấm vệ sinh",
+      myId: "II-18",
+      refSection: "construction",
+      refItemN: 14,
+      note: "Chống thấm của bạn tính theo m2 (497.000đ/m2 cho 27m2 = 13.4 triệu, tương đương ~3.3 triệu/WC). Căn Lavila tính khoán 3.0 triệu/WC. Chi phí chống thấm của bạn ở mức hợp lý (chỉ cao hơn ~10%)."
+    },
+    {
+      category: "Nhân công ốp lát",
+      name: "Nhân công lát gạch nền",
+      myId: "II-19",
+      refSection: "construction",
+      refItemN: 23,
+      note: "Nhân công lát gạch của bạn (355.000đ/m2) tương đồng với Lavila (340.000đ/m2). Mức chênh lệch 4% là bình thường trong thi công."
+    }
+  ];
+
+  // Calculate my project total
+  var myTotal = 0;
+  DATA.forEach(sec => {
+    sec.items.forEach(it => {
+      myTotal += it.tt;
+    });
+  });
+
+  // Calculate potential savings on comparison
+  var totalSavings = 0;
+  var tableRows = '';
+
+  COMPARISON_MAPPINGS.forEach(function(mapping) {
+    // Find my item
+    let myItem = null;
+    DATA.forEach(sec => {
+      let found = sec.items.find(it => it.id === mapping.myId);
+      if (found) myItem = found;
+    });
+
+    if (!myItem) return;
+
+    // Find ref item
+    let refItem = null;
+    if (typeof LAVILA_DATA !== 'undefined' && LAVILA_DATA[mapping.refSection]) {
+      LAVILA_DATA[mapping.refSection].forEach(sec => {
+        let found = sec.items.find(it => it.n === mapping.refItemN);
+        if (found) refItem = found;
+      });
+    }
+
+    if (!refItem) return;
+
+    // Active negotiated price or standard price
+    let customP = parseFloat(getLocal(myItem.id, 'price', ''));
+    let activePrice = (!isNaN(customP) && customP > 0) ? customP : myItem.dg;
+    let priceDiff = activePrice - refItem.dg;
+    let pctDiff = Math.round((priceDiff / refItem.dg) * 100);
+    let cashDiff = priceDiff * myItem.sl;
+
+    if (cashDiff > 0) {
+      totalSavings += cashDiff;
+    }
+
+    let diffBadge = '';
+    if (pctDiff > 15) {
+      diffBadge = `<span class="diff-badge danger">+${pctDiff}%</span>`;
+    } else if (pctDiff > 0) {
+      diffBadge = `<span class="diff-badge warning">+${pctDiff}%</span>`;
+    } else {
+      diffBadge = `<span class="diff-badge success">${pctDiff}%</span>`;
+    }
+
+    let priceDisplay = '';
+    if (activePrice < myItem.dg) {
+      priceDisplay = `
+        <div class="price-box-compare">
+          <span class="old">${fmt(myItem.dg)}</span>
+          <span class="current" style="color:var(--grn);">${fmt(activePrice)}</span>
+        </div>
+      `;
+    } else {
+      priceDisplay = `
+        <div class="price-box-compare">
+          <span class="current">${fmt(activePrice)}</span>
+        </div>
+      `;
+    }
+
+    tableRows += `
+      <tr>
+        <td style="color:var(--text3); font-weight:600;">${mapping.category}</td>
+        <td>
+          <strong>${mapping.name}</strong><br>
+          <span style="font-size:11px; color:var(--text3);">${myItem.name} (SL: ${myItem.sl} ${myItem.dvt})</span>
+        </td>
+        <td style="text-align:right;">${priceDisplay}</td>
+        <td style="text-align:right; font-weight:600; color:var(--blue);">${fmt(refItem.dg)}<br><span style="font-size:10px; color:var(--text3); font-weight:normal;">Lavila (n=${refItem.n})</span></td>
+        <td style="text-align:center;">${diffBadge}</td>
+        <td style="text-align:right; font-weight:700; color:${cashDiff > 0 ? 'var(--red)' : 'var(--grn)'};">
+          ${cashDiff > 0 ? '+' + fmt(cashDiff) : fmt(cashDiff)}
+        </td>
+        <td>
+          <span class="rec-text ${pctDiff > 15 ? 'alert-rec' : ''}">${mapping.note}</span>
+        </td>
+      </tr>
+    `;
+  });
+
+  // Calculate cost per m2
+  var myCostPerM2 = myTotal / 385;
+  var refCostPerM2 = 2102527971 / 190; // Lavila 190m2 floor area
+
+  var html = `
+    <div class="compare-container">
+      <div class="compare-header-box">
+        <h2>⚖️ Bảng Đối Chiếu Báo Giá Đối Chứng (Lavila)</h2>
+        <p>So sánh cơ cấu chi phí và đơn giá thực tế của căn nhà bạn (385m² sàn) với căn <strong>Villa Lavila Quận 7</strong> (190m² sàn, tổng dự toán 2.1 tỷ) được thi công cùng một bên thầu. Các đơn giá của bạn sẽ tự động cập nhật theo giá đàm phán trong thời gian thực.</p>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card yours">
+          <h3>Dự án của bạn (385m²)</h3>
+          <div class="val">${fmtShort(myTotal)}</div>
+          <div class="sub-val">Suất đầu tư: <strong>${fmtShort(myCostPerM2)}/m²</strong></div>
+          <span class="badge-pill" style="background:var(--acc-light); color:var(--acc);">Dự án hiện tại</span>
+        </div>
+
+        <div class="compare-card ref">
+          <h3>Lavila Quận 7 (190m²)</h3>
+          <div class="val">2.1 tỷ</div>
+          <div class="sub-val">Suất đầu tư: <strong>${fmtShort(refCostPerM2)}/m²</strong></div>
+          <span class="badge-pill" style="background:var(--blue-bg); color:var(--blue);">Dự án đối chứng</span>
+        </div>
+
+        <div class="compare-card saving">
+          <h3>Tiết kiệm đàm phán thêm</h3>
+          <div class="val" style="color:var(--grn);">${fmtShort(totalSavings)}</div>
+          <div class="sub-val">Nếu đưa đơn giá về mức đối chứng</div>
+          <span class="badge-pill" style="background:var(--grn-bg); color:var(--grn);">Đề xuất giảm</span>
+        </div>
+      </div>
+
+      <div class="compare-section">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Đối Chiếu Chi Tiết Từng Hạng Mục Cường Độ Cao
+        </h3>
+        <div class="tbl-wrap">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Phân loại</th>
+                <th>Hạng mục đối chiếu</th>
+                <th style="text-align:right;">Đơn giá của bạn</th>
+                <th style="text-align:right;">Đơn giá đối chứng (Lavila)</th>
+                <th style="text-align:center;">Chênh lệch (%)</th>
+                <th style="text-align:right;">Chênh lệch tiền</th>
+                <th>Khuyến nghị & Chiến lược đàm phán</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRows || '<tr><td colspan="7" style="text-align:center;">Không tìm thấy hạng mục đối chiếu hợp lệ.</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="compare-section">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Dữ Liệu Raw Dự Án Đối Chứng (Lavila - Chị Ngọc)
+        </h3>
+        <p style="font-size:12.5px; color:var(--text2); margin-bottom:15px;">Dưới đây là toàn bộ các hạng mục chi tiết được trích xuất trực tiếp từ file Google Sheets của nhà Lavila Quận 7. Bạn có thể tra cứu nhanh các thông số kỹ thuật và quy cách vật liệu thầu đã thi công cho chị Ngọc.</p>
+        
+        <div class="ref-tabs-container">
+          <div class="ref-tabs">
+            <button class="ref-tab active" id="btn-ref-const" onclick="switchRefTab('construction')">🔨 Phần Xây Dựng & M&E (${LAVILA_DATA.construction.reduce((sum, s) => sum + s.items.length, 0)} mục)</button>
+            <button class="ref-tab" id="btn-ref-int" onclick="switchRefTab('interior')">🛋️ Phần Nội Thất (${LAVILA_DATA.interior.reduce((sum, s) => sum + s.items.length, 0)} mục)</button>
+          </div>
+          <div id="ref-tab-content">
+            ${renderRefRawData('construction')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  main.innerHTML = html;
+  
+  // Update browser document title
+  document.title = "So sánh Báo giá | Quotation Checker";
+  document.getElementById('totalItems').textContent = COMPARISON_MAPPINGS.length;
+}
+
+// Global functions for tabs inside comparison screen
+window.switchRefTab = function(type) {
+  document.querySelectorAll('.ref-tab').forEach(b => b.classList.remove('active'));
+  if (type === 'construction') {
+    document.getElementById('btn-ref-const').classList.add('active');
+  } else {
+    document.getElementById('btn-ref-int').classList.add('active');
+  }
+  document.getElementById('ref-tab-content').innerHTML = renderRefRawData(type);
+};
+
+window.renderRefRawData = function(type) {
+  if (typeof LAVILA_DATA === 'undefined') return '<p>Không có dữ liệu đối chứng.</p>';
+  var sections = LAVILA_DATA[type];
+  var html = '';
+  sections.forEach(sec => {
+    var rows = '';
+    sec.items.forEach(it => {
+      rows += `
+        <tr>
+          <td style="color:var(--text3); font-weight:600; text-align:center;">${it.n}</td>
+          <td><strong>${it.name}</strong>${it.size ? `<br><span style="font-size:11px;color:var(--text3);">Kích thước: ${it.size}</span>` : ''}</td>
+          <td>${it.dvt}</td>
+          <td style="text-align:center; font-weight:600;">${it.sl}</td>
+          <td style="text-align:right; font-weight:600;">${fmt(it.dg)}</td>
+          <td style="text-align:right; font-weight:700; color:var(--blue);">${fmt(it.tt)}</td>
+          <td style="font-size:11.5px; color:var(--text2);">${it.note || '—'}</td>
+        </tr>
+      `;
+    });
+
+    var secTotal = sec.items.reduce((s, it) => s + it.tt, 0);
+
+    html += `
+      <div style="margin-bottom:18px; border:1px solid var(--border); border-radius:var(--rs); overflow:hidden;">
+        <div style="background:var(--surface2); padding:10px 14px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+          <span>Phần ${sec.s}: ${sec.name}</span>
+          <span style="background:var(--blue-bg); color:var(--blue); padding:2px 8px; border-radius:100px; font-size:11px;">Tổng: ${fmt(secTotal)}</span>
+        </div>
+        <div class="tbl-wrap">
+          <table class="report-table" style="margin-bottom:0; font-size:12px;">
+            <thead>
+              <tr>
+                <th style="width:40px; text-align:center;">STT</th>
+                <th>Tên sản phẩm / Quy cách</th>
+                <th>ĐVT</th>
+                <th style="text-align:center; width:50px;">SL</th>
+                <th style="text-align:right; width:100px;">Đơn giá</th>
+                <th style="text-align:right; width:110px;">Thành tiền</th>
+                <th>Ghi chú vật liệu / Chi tiết kỹ thuật</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  });
+  return html;
+};
+
 function render() {
   var main = document.getElementById('main');
   var empty = document.getElementById('empty');
   
   if (filter === 'report') {
     renderReport();
+    return;
+  }
+  
+  if (filter === 'compare') {
+    renderCompare();
     return;
   }
   
