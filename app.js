@@ -2069,16 +2069,16 @@ function renderCompare() {
   var html = `
     <div class="compare-container">
       <div class="compare-header-box">
-        <h2>⚖️ Bảng Đối Chiếu Báo Giá Đối Chứng (Lavila)</h2>
-        <p>So sánh cơ cấu chi phí và đơn giá thực tế của căn nhà bạn (385m² sàn) với căn <strong>Villa Lavila Quận 7</strong> (190m² sàn, tổng dự toán 2.1 tỷ) được thi công cùng một bên thầu. Các đơn giá của bạn sẽ tự động cập nhật theo giá đàm phán trong thời gian thực.</p>
+        <h2>⚖️ Bảng Đối Chiếu Báo Giá Đối Chứng (Lavila vs Vạn Phúc)</h2>
+        <p>So sánh cơ cấu chi phí và đơn giá thực tế của <strong>Nhà Vạn Phúc</strong> (385m² sàn) với căn <strong>Villa Lavila Quận 7</strong> (190m² sàn, tổng dự toán 2.1 tỷ) được thi công cùng một bên thầu. Các đơn giá của bạn sẽ tự động cập nhật theo giá đàm phán trong thời gian thực.</p>
       </div>
 
       <div class="compare-grid">
         <div class="compare-card yours">
-          <h3>Dự án của bạn (385m²)</h3>
+          <h3>Nhà Vạn Phúc (385m²)</h3>
           <div class="val">${fmtShort(myTotal)}</div>
           <div class="sub-val">Suất đầu tư: <strong>${fmtShort(myCostPerM2)}/m²</strong></div>
-          <span class="badge-pill" style="background:var(--acc-light); color:var(--acc);">Dự án hiện tại</span>
+          <span class="badge-pill" style="background:var(--acc-light); color:var(--acc);">Dự án của bạn</span>
         </div>
 
         <div class="compare-card ref">
@@ -2107,8 +2107,8 @@ function renderCompare() {
               <tr>
                 <th>Phân loại</th>
                 <th>Hạng mục đối chiếu</th>
-                <th style="text-align:right;">Đơn giá của bạn</th>
-                <th style="text-align:right;">Đơn giá đối chứng (Lavila)</th>
+                <th style="text-align:right;">Đơn giá Vạn Phúc</th>
+                <th style="text-align:right;">Đơn giá Lavila</th>
                 <th style="text-align:center;">Chênh lệch (%)</th>
                 <th style="text-align:right;">Chênh lệch tiền</th>
                 <th>Khuyến nghị & Chiến lược đàm phán</th>
