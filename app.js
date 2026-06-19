@@ -2378,8 +2378,7 @@ async function syncToCloud() {
   try {
     let res = await fetch('/api/save', {
       method: 'POST', headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ projectId: pid, data: JSON.stringify(data) })
     });
@@ -2392,11 +2391,7 @@ async function loadFromCloud() {
   let pid = document.getElementById('projectId').value.trim();
   if (!pid) return alert('Vui lòng nhập Mã dự án để tải!');
   try {
-    let res = await fetch('/api/load?projectId=' + encodeURIComponent(pid), {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-      }
-    });
+    let res = await fetch('/api/load?projectId=' + encodeURIComponent(pid));
     if (res.ok) {
       let json = await res.json();
       if (!json.data) return alert('Không tìm thấy dữ liệu cho mã này.');
@@ -2617,34 +2612,5 @@ function processCsvText() {
   }
 }
 
-// --- AUTHENTICATION ---
-async function verifyAuth() {
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    window.location.href = 'login.html';
-    return;
-  }
-  try {
-    const res = await fetch('/api/auth/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
-    });
-    const data = await res.json();
-    if (!data.valid) {
-      window.location.href = 'login.html';
-    } else {
-      render();
-    }
-  } catch(e) {
-    console.error(e);
-    render(); // fallback if offline
-  }
-}
-
-function logout() {
-  localStorage.removeItem('auth_token');
-  window.location.href = 'login.html';
-}
-
-verifyAuth();
+// --- INITIAL RENDER ---
+render();
